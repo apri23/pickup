@@ -1,0 +1,87 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">{{date_format(data_result.insertdate)}}, {{data_result.requestpickupdate}}</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ion-label style="margin: 10px 10px 5px 10px; text-align: center; font-size: 3.4vw">
+	  	<span style="float: left;">ID PICKUP</span>
+	  	<span style="float: right;">{{data_result.pickupid}}</span>
+	</ion-label>
+
+	<ion-card class="card-mids">
+		<ion-row>
+	  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Pelanggan</ion-badge>
+	  	</ion-row>
+	    <ion-list lines>
+	      <button ion-item style="padding-left: 10px;" (click)="hidenmaps()">
+	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profile.svg" />
+	        <span style="font-size: 2.7vw;">ID Klien : {{data_result.clientid}}</span><br>
+	        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+	        <span style="font-size: 2.7vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
+	      </button>
+	    </ion-list>
+	</ion-card>
+
+	<ng-container *ngIf="mapshiden==true; then hidmaps; else mpssss"></ng-container>
+	<ng-template #hidmaps></ng-template>
+	<ng-template #mpssss>
+		<ion-card class="card-midss" (click)="hidenmaps()">
+			<ion-row style="height: 10%;">
+		  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Lokasi Pickup</ion-badge>
+		  	</ion-row>
+			<div #map_canvas id="map_canvass"></div>
+		</ion-card>
+	</ng-template>
+
+	<ion-card class="card-mids">
+		<ion-row>
+	  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Petugas Pickup</ion-badge>
+	  	</ion-row>
+	    <ion-list lines>
+	      <button ion-item style="padding-left: 10px;">
+	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/oranger.svg" />
+	        <span style="font-size: 2.7vw;">ID Petugas : {{data_result.pickupofficerid}}</span><br>
+	        <span style="font-size: 3.2vw;"><b>{{data_result.pickupofficername}} - {{data_result.pickupofficerphone}}</b></span>
+	      </button>
+	    </ion-list>
+	</ion-card>
+
+	<ion-card class="card-mids">
+		<ion-row>
+	  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Transaksi (Total Paket)</ion-badge>
+	  	</ion-row>
+	    <ion-list lines>
+	      <button ion-item style="padding-left: 10px; border-bottom: 1px solid #FFE7E7;">
+	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/transaction.svg" />
+	        <span style="font-size: 3.2vw;">Penugasan : <b>{{data_result.assignmenttotal}}</b></span><br>
+	        <span style="font-size: 3.2vw;">Proses Pickup : <b>{{data_result.assignmenttotal}}</b></span><br>
+	        <span style="font-size: 3.2vw;">Di bawa oleh Petugas : <b>{{data_result.assignmenttotal}}</b></span><br>
+	        <span style="font-size: 3.2vw;">Tiba di Kantor Pos : <b>{{data_result.arrivedatpostoffice}}</b></span><br>
+	        <span style="font-size: 3.2vw;">Batal pickup : <b>{{data_result.cancelpickuptotal}}</b></span><br>
+	      </button>
+	      <button ion-item style="padding-left: 10px;">
+	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/package.svg" />
+	        <span style="font-size: 3.2vw;">Nilai Barang : <b>Rp. {{data_result.valuegoodssum | number}}</b></span><br>
+	        <span style="font-size: 3.2vw;">Toal Berat : <b>{{data_result.itemsgrweightsum | number}}</b> gram</span>
+	      </button>
+	    </ion-list>
+	    <ion-row>
+          <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 3.2vw">Total <b>{{data_result.itemscount}}</b> Paket</ion-col>
+          <ion-col col-6 style="font-size: 4.3vw; padding-right: 8px;"><span style="float: right;"><b>Rp. {{data_result.itemsmoneysum | number }}</b></span></ion-col>
+        </ion-row>
+	</ion-card>
+	
+</ion-content>

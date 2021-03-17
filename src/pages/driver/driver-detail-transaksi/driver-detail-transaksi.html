@@ -1,0 +1,198 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">{{data_result.requestpickupdate}}</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content >
+
+  <ion-label style="margin: 10px 10px 5px 10px; text-align: center; font-size: 3.4vw">
+  	<span style="float: left;">ID PICKUP</span>
+  	<span style="float: right;">{{data_result.pickupid}}</span>
+  </ion-label>
+
+  <ion-card class="card-mids">
+    <ion-list lines>
+      <button ion-item style="padding-left: 10px;">
+        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profile.svg" />
+        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+        <span style="font-size: 3vw;">ID Klien : {{data_result.clientid}}</span>
+        <img item-end style="width: 25px; margin-right: 5px;" src="assets/icon/telephone.svg" (click)="call(data_result.senderphone)" />
+      </button>
+    </ion-list>
+  </ion-card>
+
+  <ng-container *ngIf="data_result.pickupstatus==27; then rutes; else norute"></ng-container>
+  <ng-template #rutes>
+    <ion-card class="card-mids">
+      <ion-list lines>
+        <button ion-item style="padding-left: 15px;">
+          <img item-start style="width: 24px; margin-right: 12px;" src="assets/icon/alamat.svg" />
+          <span style="font-size: 2.8vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
+          <img item-end style="width: 25px; margin-right: 15px;" src="assets/icon/rute.svg" (click)="rute()" />
+        </button>
+      </ion-list>
+    </ion-card>
+  </ng-template>
+  <ng-template #norute>
+    <ion-card class="card-mids">
+      <ion-list lines>
+        <button ion-item style="padding-left: 15px;">
+          <img item-start style="width: 24px; margin-right: 12px;" src="assets/icon/alamat.svg" />
+          <span style="font-size: 2.8vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
+        </button>
+      </ion-list>
+    </ion-card>
+  </ng-template>
+
+  <ion-card class="card-mids">
+    <ion-row>
+      <ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Detail Paket</ion-badge>
+    </ion-row>
+
+    <ng-container *ngIf="data_result.pickupstatus==27; then val1; else noval1"></ng-container>
+    <ng-template #val1>
+
+      <ng-container *ngIf="pakets==null; then noitem; else item"></ng-container>
+      <ng-template #noitem>
+        <ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+          <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+        </ion-list>
+      </ng-template>
+      <ng-template #item>
+        <ng-container *ngIf="pakets==''; then noitem1; else item1"></ng-container>
+        <ng-template #noitem1>
+          <ion-list style="margin-left: 0px; text-align: center; vertical-align: middle;" (click)="get_item()">
+            <p class="p1" style="margin: 15px 0px;">Data tidak ditemukan..</p>
+          </ion-list>
+        </ng-template>
+        <ng-template #item1>
+          <ion-list style="margin-left: 0px;">
+            <ion-item-sliding *ngFor="let paket of pakets; let i = index;" #slidingItem>
+              <ion-item-options side="left" (click)="closeOption()">
+                <button ion-button color="utama" (click)="batal_paket(paket)" style="font-size: 2.8vw;">Batal</button>
+              </ion-item-options>
+              <button ion-item  style="padding: 0px 0px 0px 10px; margin: 5px 0px 5px 0px;" #item (click)="openOption(slidingItem, item)">
+                <img item-start style="width: 24px; margin-right: 10px;" src="assets/icon/package.svg" />
+                <span style="white-space: pre-wrap !important;"><span style="font-size: 2.8vw;"><b>{{paket.orderid}}</b></span></span> - 
+                <span style="white-space: pre-wrap !important;"><span style="font-size: 3.2vw;">{{paket.desctrans}}</span></span><br>
+                <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Pajang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.length | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.length | number }}</b> cm</span></span><br>
+                <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemsgrweight | number }}</b> gram <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
+              </button>
+              <ion-item-options side="right" (click)="closeOption()">
+                <button ion-button color="secondary" (click)="validasi_paket(paket)" style="font-size: 2.8vw;">Validasi Item</button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-list>
+          <ion-row>
+            <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 2.8vw">Total <b>{{pakets.length}}</b> Paket</ion-col>
+            <ion-col col-6 style="font-size: 5vw; padding-right: 8px;"><span style="float: right;">Rp. {{data_result.itemsmoneysum | number }}</span></ion-col>
+          </ion-row>
+        </ng-template>
+      </ng-template>
+
+    </ng-template>
+    <ng-template #noval1>
+
+      <ng-container *ngIf="data_result.pickupstatus==17; then bawa; else nobawa"></ng-container>
+      <ng-template #bawa>
+        <ng-container *ngIf="pakets==null; then noitemq; else itemq"></ng-container>
+        <ng-template #noitemq>
+          <ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+            <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+          </ion-list>
+        </ng-template>
+        <ng-template #itemq>
+          <ng-container *ngIf="pakets==''; then noitem1q; else item1q"></ng-container>
+          <ng-template #noitem1q>
+            <ion-list style="margin-left: 0px; text-align: center; vertical-align: middle;" (click)="get_item()">
+              <p class="p1" style="margin: 15px 0px;">Data tidak ditemukan..</p>
+            </ion-list>
+          </ng-template>
+          <ng-template #item1q>
+            <ion-list style="margin-left: 0px;" *ngFor="let paket of pakets; let i = index;">
+              <button ion-item  style="padding: 0px 0px 0px 10px; margin: 5px 0px 5px 0px;">
+                <img item-start style="width: 24px; margin-right: 10px;" src="assets/icon/package.svg" />
+                <span style="white-space: pre-wrap !important;"><span style="font-size: 2.8vw;"><b>{{paket.orderid}}</b></span></span> - 
+                <span style="white-space: pre-wrap !important;"><span style="font-size: 3.2vw;">{{paket.desctrans}}</span></span><br>
+                <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Pajang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.length | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.length | number }}</b> cm</span></span><br>
+                <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemsgrweight | number }}</b> gram <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
+              </button>
+            </ion-list>
+            <ion-row>
+              <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 12px">Total <b>{{pakets.length}}</b> Paket</ion-col>
+              <ion-col col-6 style="font-size: 5vw; padding-right: 8px;"><span style="float: right;">Rp. {{data_result.itemsmoneysum | number }}</span></ion-col>
+            </ion-row>
+          </ng-template>
+        </ng-template>
+      </ng-template>
+      <ng-template #nobawa>
+
+        <ng-container *ngIf="pakets==null; then noitemq; else itemq"></ng-container>
+        <ng-template #noitemq>
+          <ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+            <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+          </ion-list>
+        </ng-template>
+        <ng-template #itemq>
+          <ng-container *ngIf="pakets==''; then noitem1q; else item1q"></ng-container>
+          <ng-template #noitem1q>
+            <ion-list style="margin-left: 0px; text-align: center; vertical-align: middle;" (click)="get_item()">
+              <p class="p1" style="margin: 15px 0px;">Data tidak ditemukan..</p>
+            </ion-list>
+          </ng-template>
+          <ng-template #item1q>
+            <ion-list style="margin-left: 0px;">
+              <ion-item-sliding *ngFor="let paket of pakets; let i = index;" #slidingItem>
+                <button ion-item  style="padding-left: 15px;" #item (click)="openOption(slidingItem, item)">
+                  <img item-start style="width: 29px; margin-right: 15px;" src="assets/icon/package.svg" />
+                  <span style="white-space: pre-wrap !important;"><span style="font-size: 2.8vw;"><b>{{paket.orderid}}</b></span></span> - 
+                  <span style="white-space: pre-wrap !important;"><span style="font-size: 3.2vw;">{{paket.desctrans}}</span></span><br>
+                  <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Pajang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.length | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.length | number }}</b> cm</span></span><br>
+                  <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemsgrweight | number }}</b> gram <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
+                </button>
+                <ion-item-options side="right" (click)="closeOption()">
+                  <button ion-button color="primary" (click)="showbarcode(paket)">barcode</button>
+                </ion-item-options>
+              </ion-item-sliding>
+            </ion-list>
+            <ion-row>
+              <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 12px">Total <b>{{pakets.length}}</b> Paket</ion-col>
+              <ion-col col-6 style="font-size: 25px; padding-right: 8px;"><span style="float: right;">Rp. {{data_result.itemsmoneysum | number }}</span></ion-col>
+            </ion-row>
+          </ng-template>
+        </ng-template>
+        
+      </ng-template>
+      
+    </ng-template>
+
+  </ion-card>
+
+</ion-content>
+
+<ion-footer no-border style="padding: 7px;">
+  <ng-container *ngIf="data_result.pickupstatus==27; then val; else noval"></ng-container>
+  <ng-template #val>
+    <!-- <button ion-button block color="utama" style="font-size: 13px; height: 40px; border-radius: 14px;" (click)="selesai_validasi(data_result.pickupid)">Selesai Validasi Paket</button> -->
+  </ng-template>
+  <ng-template #noval>
+    <ng-container *ngIf="data_result.pickupstatus==17; then bawa; else nobawa"></ng-container>
+    <ng-template #bawa>
+      <button ion-button block color="utama" style="font-size: 13px; height: 40px; border-radius: 14px;" (click)="update_status(data_result.pickupid)">Paket di bawa</button>
+    </ng-template>
+    <ng-template #nobawa>
+      <button ion-button block color="utama" style="font-size: 13px; height: 40px; border-radius: 14px;" (click)="update_status_loket(data_result.pickupid)">Paket Sampai di Kantor</button>
+    </ng-template>
+
+  </ng-template>
+</ion-footer>

@@ -1,0 +1,49 @@
+<ion-content>
+	<!-- <div>
+	    <ion-segment [(ngModel)]="pet" color="utama">
+	      <ion-segment-button value="puppies" checked style="color: #000;" (click)="change_val('1')">
+	        <b>Harian</b>
+	      </ion-segment-button>
+	      <ion-segment-button value="kittens" style="color: #000;" (click)="change_val('2')">
+	        <b>Jarak</b>
+	      </ion-segment-button>
+	    </ion-segment>
+	</div> -->
+
+	<!-- <div [ngSwitch]="pet">
+    	<ion-list *ngSwitchCase="'puppies'" style="margin-bottom: 0px;">
+			<ionic-calendar-date-picker style="font-size: 15px;" (onSelect)="dateSelected($event)"></ionic-calendar-date-picker>
+		</ion-list>
+	</div> -->
+
+	<!-- <div [ngSwitch]="pet">
+    	<ion-list *ngSwitchCase="'kittens'" style="margin-bottom: 0px;"> -->
+
+    		<ion-badge style="margin: 5px; width: calc(100% - 10px); padding: 10px;" color="light">
+    			Pilih tanggal yang ingin di tampilkan
+    			<ion-icon style="float: right;" ios="ios-close" md="md-close" (click)="close()"></ion-icon>
+    		</ion-badge>
+    		
+			<ion-row>
+  				<ion-col style="padding: 0px;">
+  					<ion-item>
+				      <ion-label stacked>Mulai dari</ion-label>
+				      <ion-datetime displayFormat="DD MMMM YYYY" [(ngModel)]="firstdate" min="2020" cancelText="Tutup" (ionChange)="toweek($event)" doneText="Pilih"></ion-datetime>
+				    </ion-item>
+  				</ion-col>
+  				<ion-col style="padding: 0px;">
+  					<ion-item>
+				      <ion-label stacked>Sampai</ion-label>
+				      <ion-datetime displayFormat="DD MMMM YYYY" [(ngModel)]="date2" min="{{mins}}" max="{{maxs}}" cancelText="Tutup" doneText="Pilih" ></ion-datetime>
+				    </ion-item>
+  				</ion-col>
+  			</ion-row>
+  			<ion-row>
+				<ion-col>
+					<button ion-button style="height: 3rem; border-radius: 5px" color="utama" block (click)="terapkan()">Terapkan</button>
+				</ion-col>
+			</ion-row>
+			
+		<!-- </ion-list>
+	</div> -->
+ </ion-content> 

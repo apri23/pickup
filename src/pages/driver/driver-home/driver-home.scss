@@ -1,0 +1,76 @@
+page-driver-home {
+
+	.card-tops{
+		color: #010101; 
+		width: calc(100% - 14px); 
+		margin: 7px;
+		box-shadow: 0px; 
+		padding: 10px 0px 0px 0px;
+		border-radius: 5px;
+		background-color: #FFFEFE;
+	}
+
+	.card-mids{
+		color: #010101; 
+		margin: 0px; 
+		margin-top: 10px; 
+		margin-left: 10px; 
+		margin-right: 10px;
+		box-shadow: 0px; 
+		padding-bottom: 10px; 
+		border-radius: 5px; 
+		box-shadow: rgba(0, 0, 0, 0.52) 0px 2px 8px 0px;
+		background-color: #FFFEFE;
+	}
+
+	.date-exp{
+		padding-top: 15px; padding-left: 0px; font-size: 12px; text-align: right; padding-right: 8px; vertical-align: middle;
+	}
+
+	.desc{
+		padding-top: 5px; padding-left: 8px; font-size: 3.2vw; padding-right: 0px;
+	}
+
+	.id{
+		padding: 0px; text-align: center;
+	}
+
+	.title2{
+		text-align: center;
+		color: #fff;
+		margin: 0px;
+	}
+
+	.icons {
+	 display: inline-block;
+	 font-size: 25px;
+	 vertical-align: middle;
+	}
+
+	.texts{
+		padding-top: 3px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.badgenotif {
+	    height: 16px;
+	    max-width: 26px;
+	    background-color: rgb(234, 33, 45);
+	    color: rgb(255, 255, 255);
+	    display: flex;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    position: absolute;
+	    top: 8px;
+	    left: 100px;
+	    z-index: 1;
+	    // font-weight: 300;
+	    font-size: 9px;
+	    border-radius: 8px;
+	    padding: 5px;
+	}
+
+}

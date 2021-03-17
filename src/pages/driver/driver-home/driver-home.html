@@ -1,0 +1,265 @@
+<ion-header no-border>
+  <ion-navbar hideBackButton>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">
+            <!-- <ng-container *ngIf="login_data.idpetugas==''; then nologint; else logint"></ng-container>
+            <ng-template #nologint>MITRA</ng-template>
+            <ng-template #logint>{{login_data.jabatan}}</ng-template> -->
+            PETUGAS PICKUP
+            </ion-label>
+          </ion-title>
+        </ion-col>
+        <ion-buttons end style="padding-right: 10px; padding-top: 5px;" (click)="to_history()">
+          <button style="font-size: 12px" ion-button icon-only color="light">
+            <ion-icon name="ios-clipboard" md="md-clipboard"></ion-icon>
+          </button>
+        </ion-buttons>
+        <ion-buttons end style="padding-right: 10px; padding-top: 5px;" (click)="logout()">
+          <button style="font-size: 12px" ion-button icon-only color="light">
+            <ion-icon ios="ios-log-out" md="md-log-out"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-row>
+      <ion-card class="card-tops no-scroll">
+        <ion-row>
+          <ion-col style="padding: 0px;">
+            <ion-title>
+              <ng-container *ngIf="login_data.idpetugas==''; then nologin; else login"></ng-container>
+              <ng-template #nologin>
+                <ion-label class="title3">-<br> <span style="font-size: 14px;">-</span></ion-label>
+              </ng-template>
+              <ng-template #login>
+                <ion-label class="title3">{{login_data.idpetugas}} - {{login_data.username}} <br> <span style="font-size: 3.4vw;">{{login_data.kdkantor}} {{login_data.kantor}}</span></ion-label>
+              </ng-template>
+            </ion-title>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-list-header style="margin-bottom: 0px;">
+            <ng-container *ngIf="pet=='puppies'; then a; else b"></ng-container>
+            <ng-template #a>
+              <ng-container *ngIf="items==null; then notrxa; else trxa"></ng-container>
+              <ng-template #notrxa></ng-template>
+              <ng-template #trxa>
+                <ng-container *ngIf="items.length==0; then notrx1a; else trx1a"></ng-container>
+                <ng-template #notrx1a></ng-template>
+                <ng-template #trx1a>
+                  <b style="font-size: 2.8vw">Total {{items.length}} Transaksi</b>
+                </ng-template>
+              </ng-template>
+            </ng-template>
+            <ng-template #b>
+              <ng-container *ngIf="pet=='wolfs'; then c; else d"></ng-container>
+              <ng-template #c>
+                <ng-container *ngIf="itemsd==null; then notrxad; else trxad"></ng-container>
+                <ng-template #notrxad></ng-template>
+                <ng-template #trxad>
+                  <ng-container *ngIf="itemsd.length==0; then notrx1ad; else trx1ad"></ng-container>
+                  <ng-template #notrx1ad></ng-template>
+                  <ng-template #trx1ad>
+                    <b style="font-size: 2.8vw">Total {{itemsd.length}} Transaksi</b>
+                  </ng-template>
+                </ng-template>
+              </ng-template>
+              <ng-template #d>
+                <ng-container *ngIf="itemss==null; then notrxas; else trxas"></ng-container>
+                <ng-template #notrxas></ng-template>
+                <ng-template #trxas>
+                  <ng-container *ngIf="itemss.length==0; then notrx1as; else trx1as"></ng-container>
+                  <ng-template #notrx1as></ng-template>
+                  <ng-template #trx1as>
+                    <b style="font-size: 2.8vw">Total {{itemss.length}} Transaksi</b>
+                  </ng-template>
+                </ng-template>
+              </ng-template>
+            </ng-template>
+            <span style="float: right; padding-right: 10px; font-size: 2.8vw">{{tgl_show}}</span>
+          </ion-list-header>
+        </ion-row>
+      </ion-card>
+      </ion-grid>
+  </ion-navbar>
+</ion-header>
+
+<ion-content overflow-scroll="false">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <div style="margin-top: 3px;">
+    <ion-segment [(ngModel)]="pet" color="utama">
+      <ion-segment-button value="puppies" checked style="color: #000;" (click)="get_data()">
+        <b style="font-size: 2.8vw;">Validasi</b>
+        <ng-container *ngIf="lengtha==0; then noltha; else ltha"></ng-container>
+        <ng-template #noltha></ng-template>
+        <ng-template #ltha><span class="badgenotif">{{lengtha}}</span></ng-template>
+      </ion-segment-button>
+      <ion-segment-button value="wolfs" checked style="color: #000;" (click)="get_datad()">
+        <b style="font-size: 2.8vw;">Bawa Paket</b>
+        <ng-container *ngIf="lengthd==0; then nolthd; else lthd"></ng-container>
+        <ng-template #nolthd></ng-template>
+        <ng-template #lthd><span class="badgenotif">{{lengthd}}</span></ng-template>
+      </ion-segment-button>
+      <ion-segment-button value="kittens" style="color: #000;" (click)="get_datas()">
+        <b style="font-size: 2.8vw;">Antar Paket</b>
+        <ng-container *ngIf="lengths==0; then nolths; else lths"></ng-container>
+        <ng-template #nolths></ng-template>
+        <ng-template #lths><span class="badgenotif">{{lengths}}</span></ng-template>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'puppies'">
+
+      <ng-container *ngIf="items==null; then notrx; else trx"></ng-container>
+      <ng-template #notrx>
+        <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="250" width="100%" />
+        <ion-card-content style="text-align: center; color: #000;">
+          Belum ada transaksi untuk divalidasi..
+        </ion-card-content>
+      </ng-template>
+
+      <ng-template #trx>
+        <ng-container *ngIf="items==''; then notrx1; else trx1"></ng-container>
+        <ng-template #notrx1>
+          <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="250" width="100%" />
+          <ion-card-content style="text-align: center; color: #000;">
+            Belum ada transaksi untuk divalidasi..
+          </ion-card-content>
+        </ng-template>
+        <ng-template #trx1>
+
+          <ion-list class="ion-scroll">
+            <ion-card *ngFor="let item of items" class="card-mids" (click)="detail_trx(item,item.pickupdate)">
+              <ion-row style="border-bottom: 1px solid #DEDEDE;">
+                <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item>
+                  <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
+                  <span style="font-size: 3.2vw;"><b>{{item.pickupid}}</b></span>
+                </ion-col>
+                <ion-col col-3 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item>
+                  <span style="font-size: 3.2vw;"><b>{{item.requestpickupdate}}</b></span>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="desc">
+                  <b>{{item.sendername}} - {{item.senderphone}}</b><br>
+                  <b style="font-size: 2.8vw;">{{item.senderaddress}}</b>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 2.8vw">Total {{item.itemscount}} Paket belum validasi</ion-col>
+                <ion-col col-6 style="font-size: 5vw; padding-right: 8px;"><span style="float: right;">Rp. {{item.itemsmoneysum | number }}</span></ion-col>
+              </ion-row>
+            </ion-card>
+          </ion-list>
+
+        </ng-template>
+      </ng-template>
+
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'wolfs'">
+
+      <ng-container *ngIf="itemsd==null; then notrxd; else trxd"></ng-container>
+      <ng-template #notrxd>
+        <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="250" width="100%" />
+        <ion-card-content style="text-align: center; color: #000;">
+          Belum ada transaksi terbaru..
+        </ion-card-content>
+      </ng-template>
+
+      <ng-template #trxd>
+        <ng-container *ngIf="itemsd==''; then notrx1d; else trx1d"></ng-container>
+        <ng-template #notrx1d>
+          <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="250" width="100%" />
+          <ion-card-content style="text-align: center; color: #000;">
+            Belum ada transaksi terbaru..
+          </ion-card-content>
+        </ng-template>
+        <ng-template #trx1d>
+
+          <ion-list class="ion-scroll">
+            <ion-card *ngFor="let itemd of itemsd" class="card-mids">
+              <ion-row style="border-bottom: 1px solid #DEDEDE;">
+                <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item (click)="detail_trx(itemd,itemd.pickupdate)">
+                  <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
+                  <span style="font-size: 3.2vw;"><b>{{itemd.pickupid}}</b></span>
+                </ion-col>
+                <ion-col col-3 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item (click)="aksi_dibawa(itemd)">
+                  <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Bawa Paket</button>
+                </ion-col>
+              </ion-row>
+              <ion-row (click)="detail_trx(itemd,itemd.pickupdate)">
+                <ion-col class="desc">
+                  <b>{{itemd.sendername}} - {{itemd.senderphone}}</b><br>
+                  <b style="font-size: 2.8vw;">{{itemd.senderaddress}}</b>
+                </ion-col>
+              </ion-row>
+              <ion-row (click)="detail_trx(itemd,itemd.pickupdate)">
+                <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 2.8vw">Total {{itemd.itemscount}} Paket</ion-col>
+                <ion-col col-6 style="font-size: 5vw; padding-right: 8px;"><span style="float: right;">Rp. {{itemd.itemsmoneysum | number }}</span></ion-col>
+              </ion-row>
+            </ion-card>
+          </ion-list>
+
+        </ng-template>
+      </ng-template>
+
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'kittens'">
+      
+      <ng-container *ngIf="itemss==null; then notrxs; else trxs"></ng-container>
+      <ng-template #notrxs>
+        <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="250" width="100%" />
+        <ion-card-content style="text-align: center; color: #000;">
+          Belum ada transaksi pengantaran..
+        </ion-card-content>
+      </ng-template>
+
+      <ng-template #trxs>
+        <ng-container *ngIf="itemss==''; then notrx1s; else trx1s"></ng-container>
+        <ng-template #notrx1s>
+          <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="250" width="100%" />
+          <ion-card-content style="text-align: center; color: #000;">
+            Belum ada transaksi pengantaran..
+          </ion-card-content>
+        </ng-template>
+        <ng-template #trx1s>
+
+          <ion-list class="ion-scroll">
+            <ion-card *ngFor="let itemz of itemss" class="card-mids">
+              <ion-row style="border-bottom: 1px solid #DEDEDE;">
+                <ion-col col-8 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item (click)="detail_trx(itemz,itemz.pickupdate)">
+                  <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
+                  <span style="font-size: 3.2vw;">{{itemz.pickupid}}</span>
+                </ion-col>
+                <ion-col col-4 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item (click)="aksi_tibakp(itemz)">
+                  <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Tiba di Kantor Pos</button>
+                </ion-col>
+              </ion-row>
+              <ion-row (click)="detail_trx(itemz,itemz.pickupdate)">
+                <ion-col class="desc">
+                  <b>{{itemz.sendername}} - {{itemz.senderphone}}</b><br>
+                  <b style="font-size: 2.8vw;">{{itemz.senderaddress}}</b>
+                </ion-col>
+              </ion-row>
+              <ion-row (click)="detail_trx(itemz,itemz.pickupdate)">
+                <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 2.8vw">Total {{itemz.itemscount}} Paket</ion-col>
+                <ion-col col-6 style="font-size: 5vw; padding-right: 8px;"><span style="float: right;">Rp. {{itemz.itemsmoneysum | number }}</span></ion-col>
+              </ion-row>
+            </ion-card>
+          </ion-list>
+
+        </ng-template>
+      </ng-template>
+
+    </ion-list>
+  </div>
+
+</ion-content>

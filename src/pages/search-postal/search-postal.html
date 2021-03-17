@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">Search Postal</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-buttons end>
+	    <button ion-button icon-only (click)="closeModal()">
+	        <ion-icon item-right name="ios-close-outline" color="light"></ion-icon>
+	    </button>
+	</ion-buttons>
+  </ion-navbar>
+  <ion-searchbar placeholder="Cari Kota atau Kecamatan"
+	  [(ngModel)]="key"
+	  [showCancelButton]="shouldShowCancel"
+	  (ionInput)="search_postal()"
+	  (ionCancel)="onCancel()" style="background-color: #C51C16;" mode="ios">
+	</ion-searchbar>
+</ion-header>
+
+
+<ion-content>
+
+	<ng-container *ngIf="data=='load'; then loads; else oks"></ng-container>
+	<ng-template #loads>
+		<ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+	        <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+	    </ion-list>
+	</ng-template>
+	<ng-template #oks>
+		<ng-container *ngIf="data=='kosong'; then nol; else oks2"></ng-container>
+		<ng-template #nol>
+			<p style="text-align: center;">Data tidak ditemukan</p>
+		</ng-template>
+		<ng-template #oks2>
+			<ion-list>
+			  <button ion-item *ngFor="let datas of data" (click)="itemSelected(datas)" style="font-size: 3.2vw;">
+			    {{ datas.address }}, {{ datas.zipcode }}
+			  </button>  
+			</ion-list>
+		</ng-template>
+	</ng-template>
+
+</ion-content>

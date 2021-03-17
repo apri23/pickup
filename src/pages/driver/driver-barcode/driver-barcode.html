@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <!-- <span style="color: white;">BARCODE</span> -->
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closemodal()" style="color: white;">Tutup</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<img style="padding: auto; width:100%; margin-top: 50px;" #barcodes id="barcodes"/>
+  <button ion-button style="height: 8rem;font-size: 18px;" color="dark" block clear>{{code}}</button>
+
+</ion-content>

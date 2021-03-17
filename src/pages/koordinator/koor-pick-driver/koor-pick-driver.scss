@@ -1,0 +1,28 @@
+page-koor-pick-driver {
+	#map_canvas {
+        height: 100%;
+    }
+    .card-mids{
+		height: 350px; color: #000; margin: 0px; margin-top: 0px; margin-left: 10px; margin-right: 10px; box-shadow: 0px; padding: 0px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.52) 0px 2px 8px 0px;
+	}
+	.card-midss{
+		color: #000; margin: 0px; margin: 10px; box-shadow: 0px; padding-bottom: 0px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.52) 0px 2px 8px 0px;
+	}
+
+	.toolbar-background {
+	    background-color: color($colors, utama);
+	}
+
+	.title2{
+		text-align: center;
+		color: #000;
+	}
+
+	// .content{
+	// 	color: #fff;
+	// 	background-image: url('');
+	// 	background-repeat: no-repeat;
+	// 	background-size:cover;
+	// }
+
+}

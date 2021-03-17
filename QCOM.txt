@@ -1,0 +1,80 @@
+QCOM
+shipper: {
+    userId: props.userid,
+    name: order.shippername,
+    latitude: latitude,
+    longitude: longitude,
+    phone: order.shipperphone,
+    address: order.shipperaddress,
+    city: order.shippersubdistrict,
+    subdistrict: order.shippersubsubdistrict,
+    zipcode: order.shipperzipcode,
+    country: "Indonesia"
+},
+item: [
+    {
+        extid: order.extid,
+        itemtypeid: 1,
+        productid: order.productid,
+        valuegoods: order.valuegoods,
+        uomload: 5,
+        weight: order.weight,
+        uomvolumetric: 2,
+        length: order.length,
+        width: order.width,
+        height: order.height,
+        codvalue: order.codvalue,
+        fee: order.beadasar_htnb.split('|')[0],
+        feetax: order.ppn_ppnhtnb.split('|')[0],
+        insurance: order.beadasar_htnb.split('|')[1],
+        insurancetax: order.ppn_ppnhtnb.split('|')[1],
+        discount: 0,
+        desctrans: order.desctrans,
+        receiverzipcode: order.receiverzipcode
+    }
+]
+
+Q9+
+param1: props.user.userid,
+param2: {
+    destination: {
+        name: receiver.name,
+        phone : receiver.nohp,
+        address: ${receiver.kelurahan}, ${receiver.kecamatan}, ${receiver.kota.toUpperCase()}, ${receiver.kodepos},
+        address_name : receiver.alamat,
+        lon : receiver.longitude,
+        lat : receiver.latitude,
+        instruction: receiver.note
+    },
+    source: {
+        name: sender.name,
+        phone : sender.nohp,
+        address: ${sender.kelurahan}, ${sender.kecamatan}, ${sender.kota.toUpperCase()}, ${sender.kodepos},
+        address_name : sender.alamat,
+        lon : sender.longitude,
+        lat : sender.latitude,
+        instruction: sender.note
+    },
+    customer: {
+        id: props.user.userid,
+        name: props.detail.nama,
+        email: props.user.email,
+        phone: props.user.nohp,
+    },
+    order: {
+        distance: (state.jarak / 1000).toFixed(1),
+        weight: kiriman.berat,
+        information: kiriman.isiKiriman,
+        tariff: state.tarif,
+        province: '-',
+        payment_type: jenisPembayaran,
+        code: '',
+        id_services: '1'
+    },
+    nilai_kiriman: 0,
+    nilai_cod: 0,
+    dimensi: ${kiriman.panjang},${kiriman.lebar},${kiriman.tinggi},
+    userid: props.user.userid,
+}
+
+Bakulan

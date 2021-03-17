@@ -1,0 +1,53 @@
+page-koor-reassigment {
+
+	.infoatas {
+		margin: 10px 10px 10px 10px; 
+		padding: 0px 10px 0px 10px; 
+		width: calc(100% - 20px); 
+		font-size: 3vw; 
+		color: black;
+		text-align: left;
+	}
+
+	.card-tops{
+		color: #010101; 
+		width: calc(100% - 14px); 
+		margin: 7px;
+		box-shadow: 0px; 
+		padding: 10px 0px 0px 0px;
+		border-radius: 5px;
+		background-color: #FFFEFE;
+	}
+
+	.card-mids{
+		color: #010101; 
+		margin: 0px; 
+		margin-top: 10px; 
+		margin-left: 10px; 
+		margin-right: 10px;
+		box-shadow: 0px; 
+		padding-bottom: 10px; 
+		border-radius: 5px; 
+		box-shadow: rgba(0, 0, 0, 0.52) 0px 2px 8px 0px;
+		background-color: #FFFEFE;
+	}
+
+	.date-exp{
+		padding-top: 15px; padding-left: 0px; font-size: 3.2vw; text-align: right; padding-right: 8px; vertical-align: middle;
+	}
+
+	.desc{
+		padding-top: 5px; padding-left: 8px; font-size: 3.2vw; padding-right: 0px;
+	}
+
+	.id{
+		padding: 0px; text-align: center;
+	}
+
+	.title2{
+		text-align: center;
+		color: #fff;
+		margin: 0px;
+	}
+
+}

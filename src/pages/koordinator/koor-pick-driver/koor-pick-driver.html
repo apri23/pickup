@@ -1,0 +1,54 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">{{data_result.name}}</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content">
+
+  <ion-card class="card-midss">
+    <ion-list lines>
+      <button ion-item style="padding-left: 15px;" (click)="to_pelanggan()">
+        <img item-start style="width: 35px; margin-right: 15px;" src="assets/icon/oranger.svg" />
+        <span style="font-size: 3vw; white-space: pre-wrap !important;">Lokasi Petugas pickup "{{data_result.name}}"</span>
+      </button>
+      <ng-container *ngIf="realjarak=='load'; then loadjrk; else noloadjrk"></ng-container>
+      <ng-template #loadjrk>
+        <button ion-item style="padding-left: 23px; align-items: center; height: 10px;" (click)="searchrouteold()">
+          <img item-start style="width: 19px; margin-right: 15px; align-items: center;" src="assets/start_driver.png" />
+          <span style="font-size: 3vw; white-space: pre-wrap !important;">Sedang mencari jarak...</span>
+        </button>
+      </ng-template>
+      <ng-template #noloadjrk>
+        <button ion-item style="padding-left: 23px; align-items: center; height: 10px;" (click)="searchrouteold()">
+          <img item-start style="width: 19px; margin-right: 15px; align-items: center;" src="assets/icon/sort.svg" />
+          <span style="font-size: 3vw; white-space: pre-wrap !important;">{{realjarak}}</span>
+        </button>
+      </ng-template>
+      <button ion-item style="padding-left: 19px;" (click)="to_oranger()">
+        <img item-start style="width: 35px; margin-right: 15px;" src="assets/icon/profile.svg" />
+        <span style="font-size: 3vw; white-space: pre-wrap !important;">Lokasi pelanggan"{{data_pickup.sendername}}"</span>
+      </button>
+    </ion-list>
+  </ion-card>
+
+	<ion-card class="card-mids">
+		<div #map_canvas id="map_canvas">
+      <img item-end style="width: 25px; margin: 10px; float: right;" src="assets/icon/refresh.svg" (click)="searchrouteold()"/>
+    </div>
+	</ion-card>
+
+	<button style="margin: 10px; width: calc(100% - 20px); border-radius: 10px" ion-button icon-start full color="utama" (click)="assigment()">
+    ASSIGNMENT
+  </button>
+
+</ion-content>

@@ -1,0 +1,37 @@
+
+<ion-content>
+
+	<div style="height: 70%; display: flex; align-items: center; justify-content: center;">
+		<ion-grid style="">
+			<div class="login-header">
+				<img class="logo-img" src="assets/logo.png" (click)="showdevice()" />
+			</div>
+			<ion-row justify-content-center align-items-center style="margin-top: 25px;">
+				<ion-card class="card-login">
+					<h4 style="font-size: 3.7vw; padding-top: 10px; text-align: center;">Silahkan login terlebih dahulu</h4>
+					<div class="linespace"></div>
+					<ion-item style="background: transparent; margin-top: 10px;">
+						<img item-start style="width: 25px;" src="assets/icon/userlogin.svg" />
+						<ion-input style="font-size: 2.8vw;" type="text" name="username" [(ngModel)]="username" placeholder="Nama Pengguna.."></ion-input>
+					</ion-item>
+					<ion-item style="background: transparent; margin-top: 10px;">
+						<img item-start style="width: 25px;"  src="assets/icon/passwordlogin.svg" />
+						<ion-input style="font-size: 2.8vw;" name="password" [(ngModel)]="password" placeholder="Kata Sandi.." [type]="showPassword ? 'text' : 'password'"></ion-input>
+						<button ion-button item-end (click)="togglePassword()" clear style="font-size: 4.3vw;"><ion-icon [name]="passwordToggleIcon" color="utama"></ion-icon></button>
+					</ion-item>
+					<p style="padding: 0px 10px; margin-top: 25px;">
+						<button style="border-radius: 8px;" ion-button block color="utama" fill="solid" (click)="login_act()">Login</button>
+					</p>
+					<!-- <p style="text-align: center;">{{player_id}}</p> -->
+				</ion-card>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+</ion-content>
+
+<ion-footer no-border style="font-size: 2.9vw; color: #fff; padding: 10px;">
+	<ion-row justify-content-center align-items-center style="height: 100%">
+    	© 2021 PT Pos Indonesia (Persero) - {{versions}}
+	</ion-row>
+</ion-footer>

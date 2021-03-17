@@ -1,0 +1,28 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">RUTE</ion-label>
+          </ion-title>
+        </ion-col>
+        <ion-buttons end style="padding-right: 10px; padding-top: 5px;" (click)="searchroute()">
+          <button ion-button icon-only color="light">
+            <ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-row>
+    </ion-grid>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content">
+
+	<div #map_canvas id="map_canvas">
+    <!-- <ion-spinner style="margin: auto; align-items: center;" name="dots"></ion-spinner> -->
+    <!-- <img item-end style="width: 25px; margin: 10px; float: right;" src="../../assets/icon/refresh.svg" (click)="searchroute()"/>   -->
+  </div>
+
+</ion-content>

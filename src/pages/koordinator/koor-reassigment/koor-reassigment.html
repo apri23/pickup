@@ -1,0 +1,73 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">Penugasan Ulang</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+	<ion-refresher (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles"></ion-refresher-content>
+	</ion-refresher>
+
+	<ion-col style="padding: 0px;">
+		<ion-badge class="infoatas" color="lights" ion-item no-lines>
+			<img item-start style="width: 20px; margin: 0px 7px 0px 0px;" src="assets/icon/triangle.svg" />
+			<p style="font-size: 3vw; white-space: pre-wrap !important;">Pilih transaksi di bawah dan lakukan pemilihan ulang untuk petugas pickup.</p>
+		</ion-badge>
+	</ion-col>
+
+	<ng-container *ngIf="items==null; then notrx; else trx"></ng-container>
+	<ng-template #notrx>
+		<img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="200" width="100%" />
+		<ion-card-content style="text-align: center; color: #000;">
+		  Belum ada transaksi penugasan..
+		</ion-card-content>
+	</ng-template>
+
+	<ng-template #trx>
+		<ng-container *ngIf="items==''; then notrx1; else trx1"></ng-container>
+		<ng-template #notrx1>
+		  <img style="padding: 10px 10px; margin-top: 70px;" src="assets/not_available.svg" height="200" width="100%" />
+		  <ion-card-content style="text-align: center; color: #000;">
+		    Belum ada transaksi penugasan..
+		  </ion-card-content>
+		</ng-template>
+		<ng-template #trx1>
+		  <ion-list class="ion-scroll">
+            <ion-card *ngFor="let item of items" class="card-mids" (click)="detail_trx(item,item.pickupdate)">
+              <ion-row style="border-bottom: 1px solid #DEDEDE;">
+                <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item>
+                  <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
+                  <span style="font-size: 3.2vw;"><b>{{item.pickupid}}</b></span>
+                </ion-col>
+                <ion-col col-3 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item>
+                  <span style="font-size: 3.2vw;"><b>{{item.requestpickupdate}}</b></span>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="desc">
+                  {{item.sendername}} - {{item.senderphone}}<br>
+                  <span style="font-size: 2.8vw;">{{item.senderaddress}}</span>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 3vw">Total <b>{{item.itemscount}}</b> Paket</ion-col>
+                <ion-col col-6 style="font-size: 5vw; padding-right: 8px;"><span style="float: right;">Rp. {{item.itemsmoneysum | number }}</span></ion-col>
+              </ion-row>
+            </ion-card>
+          </ion-list>
+		</ng-template>
+	</ng-template>
+
+</ion-content>

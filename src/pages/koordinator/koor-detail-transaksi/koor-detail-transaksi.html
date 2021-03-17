@@ -1,0 +1,154 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">{{data_result.requestpickupdate}}</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content >
+
+  <ion-label style="margin: 10px 10px 5px 10px; text-align: center; font-size: 3.4vw">
+  	<span style="float: left;">ID PICKUP</span>
+  	<span style="float: right;">{{data_result.pickupid}}</span>
+  </ion-label>
+
+  <ion-card class="card-mids">
+    <ion-list lines>
+      <button ion-item style="padding-left: 10px;">
+        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profile.svg" />
+        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+        <span style="font-size: 3vw;">ID Klien : {{data_result.clientid}}</span>
+      </button>
+    </ion-list>
+  </ion-card>
+
+  <ion-card class="card-mids">
+    <ion-list lines>
+      <button ion-item style="padding-left: 10px;">
+        <img item-start style="width: 24px; margin: 0px 15px 0px 0px;" src="assets/icon/alamat.svg" />
+        <span style="font-size: 3vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
+      </button>
+    </ion-list>
+  </ion-card>
+
+  <ion-card class="card-mids">
+    <ion-row>
+  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Detail Paket</ion-badge>
+  	</ion-row>
+
+    <ng-container *ngIf="pakets==null; then noitem; else item"></ng-container>
+    <ng-template #noitem>
+
+      <ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+        <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+      </ion-list>
+
+    </ng-template>
+    <ng-template #item>
+      <ng-container *ngIf="pakets==''; then noitem1; else item1"></ng-container>
+      <ng-template #noitem1>
+
+        <ion-list style="margin-left: 0px; text-align: center; vertical-align: middle;" (click)="get_item()">
+          <p class="p1" style="margin: 15px 0px;">Data tidak ditemukan..</p>
+        </ion-list>
+
+      </ng-template>
+      <ng-template #item1>
+
+        <ion-list style="margin-left: 0px; margin-top: 5px;">
+          <ng-container *ngIf="min===true; then mins; else maxs"></ng-container>
+          <ng-template #mins>
+            <button ion-item style="padding-left: 15px; height: 40px;">
+              <img item-start style="width: 29px; margin-right: 15px;" src="assets/icon/package.svg" />
+              <span style=""><span style="font-size: 3vw;"><b>{{pakets[0].orderid}}</b></span></span> -
+              <span style=""><span style="font-size: 3.3vw;">{{pakets[0].desctrans}}</span></span>
+            </button>
+          </ng-template>
+          <ng-template #maxs>
+            <button ion-item *ngFor="let paket of pakets; let i = index;" style="padding: 0px 0px 0px 10px; margin: 5px 0px 5px 0px;">
+              <img item-start style="width: 24px; margin-right: 10px;" src="assets/icon/package.svg" />
+              <span style="white-space: pre-wrap !important;"><span style="font-size: 2.8vw;"><b>{{paket.orderid}}</b></span></span> - 
+              <span style="white-space: pre-wrap !important;"><span style="font-size: 3.2vw;">{{paket.desctrans}}</span></span><br>
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Pajang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.length | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.length | number }}</b> cm</span></span><br>
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemsgrweight | number }}</b> gram <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
+            </button>
+          </ng-template>
+
+          <button ion-item style="padding-left: 15px; max-height: 10px;" (click)="showmoreitem()">
+            <ng-container *ngIf="min===true; then minss; else maxss"></ng-container>
+            <ng-template #minss>
+              <span style="font-size: 3vw; white-space: pre-wrap !important;">Lebih detail <b style="float: right; font-size: 20px;"><ion-icon ios="ios-arrow-dropdown" md="md-arrow-dropdown"></ion-icon></b></span>
+            </ng-template>
+            <ng-template #maxss>
+              <span style="font-size: 3vw; white-space: pre-wrap !important;">Kurangi detail <b style="float: right; font-size: 20px;"><ion-icon ios="ios-arrow-dropup" md="md-arrow-dropup"></ion-icon></b></span>
+            </ng-template>
+          </button>
+        </ion-list>
+        
+        <ion-row>
+          <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 2.8vw">Total <b>{{pakets.length}}</b> Paket</ion-col>
+          <ion-col col-6 style="font-size: 4.2vw; padding-right: 8px;"><span style="float: right;"><b>Rp. {{data_result.itemsmoneysum | number }}</b></span></ion-col>
+        </ion-row>
+
+      </ng-template>
+    </ng-template>
+  </ion-card>
+
+  <ion-card class="card-mids">
+	<ion-list style="margin-left: 0px;">
+		<ion-row>
+  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Pilih Petugas Pickup</ion-badge>
+  	</ion-row>
+
+    <ng-container *ngIf="load_orng===''; then noorg; else org"></ng-container>
+    <ng-template #noorg>
+      <ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+        <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+      </ion-list>
+    </ng-template>
+    <ng-template #org>
+
+      <ng-container *ngIf="load_orng===0; then noorg1; else org1"></ng-container>
+      <ng-template #noorg1>
+
+        <ion-list style="margin-left: 0px; text-align: center; vertical-align: middle;">
+          <p class="p1" style="margin: 15px 0px;">Oranger tidak tersedia..</p>
+        </ion-list>
+        
+      </ng-template>
+      <ng-template #org1>
+
+          <ion-list lines>
+            <button *ngFor="let orange of jarak.sort(); let i = index;" (click)="pickdriver(orange)" ion-item style="padding-left: 7px; height: 55px;">
+              <img item-start style="width: 34px; margin-right: 7px;" src="assets/icon/oranger.svg" />
+              <span style="margin-right: 0px;"><span style="font-size: 2.8vw;">{{orange.pickupofficerid}}</span> - <b style="font-size: 3vw;">{{orange.name}}</b></span><br>
+              <!-- <span style="font-size: 13px; white-space: pre-wrap !important;"> -->
+                <ion-row>
+                  <!-- <ion-col style="padding: 0px; font-size: 12px;">
+                    Shift : <b>{{orange.startshift}} - {{orange.endshift}}</b>
+                  </ion-col> -->
+                  <ion-col style="padding: 0px; font-size: 2.9vw;" col-4>
+                    Jarak : <b>{{orange.distance}}</b>
+                  </ion-col>
+                </ion-row>
+              <!-- </span> -->
+              <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+            </button>
+          </ion-list>
+
+      </ng-template>
+      
+    </ng-template>
+
+	</ion-list>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,168 @@
+<ion-header no-border>
+  <ion-navbar hideBackButton>
+  	<ion-buttons start>
+	    <button ion-button icon-only (click)="batal()">
+	        <ion-icon name="ios-close-outline" color="light"></ion-icon>
+	    </button>
+	</ion-buttons>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">Perubahan Item "{{data_result.orderid}}"</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ng-container *ngIf="data_all==''; then nos; else s"></ng-container>
+	<ng-template #nos></ng-template>
+	<ng-template #s>
+		<ng-container *ngIf="data_all=='load'; then loads; else oks"></ng-container>
+		<ng-template #loads>
+			<ion-list style="margin-left: 0px; height: 50px; text-align: center; vertical-align: middle;">
+		        <ion-spinner style="margin: auto;" name="dots"></ion-spinner>
+		    </ion-list>
+		</ng-template>
+		<ng-template #oks>
+
+			<ion-row>
+		      <ion-badge style="width: calc(100% - 10px); margin: 5px; padding: 9px 0px; font-size: 3.2vw; height: 30px;" item-start color="utama">Data Pengirim</ion-badge>
+		    </ion-row>
+		    <ion-list>
+		    	<button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Nama Pengirim','Masukkan nama pengirim','namapengirim','text')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Nama Pengirim</b></span><br>
+		          <span style="font-size: 3.2vw;">{{namapengirim}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan No. Telpon Pengirim','Masukkan No. telpon pengirim','telponpengirim','number')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>No. Telpon Pengirim</b></span><br>
+		          <span style="font-size: 3.2vw;">{{telponpengirim}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Alamat Pengirim','Masukkan alamat pengirim','alamatpengirim','text')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Alamat Pengirim</b></span><br>
+		          <span style="font-size: 3.2vw;">{{alamatpengirim}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="searchpostal('pengirim')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Kota Pengirim</b></span><br>
+		          <span style="font-size: 3.2vw;">{{kotapengirim}}, {{kecpengirim}}, {{kodepospengirim}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		    </ion-list>
+
+		    <ion-row>
+		      <ion-badge style="width: calc(100% - 10px); margin: 5px; padding: 9px 0px; font-size: 3.2vw; height: 30px;" item-start color="utama">Data Penerima</ion-badge>
+		    </ion-row>
+		    <ion-list>
+		    	<button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Nama Penerima','Masukkan nama penerima','namapenerima','text')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Nama Penerima</b></span><br>
+		          <span style="font-size: 3.2vw;">{{namapenerima}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan No. Telpon penerima','Masukkan No. telpon penerima','telponpenerima','number')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>No. Telpon penerima</b></span><br>
+		          <span style="font-size: 3.2vw;">{{telponpenerima}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Alamat penerima','Masukkan alamat penerima','alamatpenerima','text')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Alamat Penerima</b></span><br>
+		          <span style="font-size: 3.2vw;">{{alamatpenerima}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="searchpostal('penerima')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Kota Penerima</b></span><br>
+		          <span style="font-size: 3.2vw;">{{kotapenerima}}, {{kecpenerima}}, {{kodepospenerima}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		    </ion-list>
+
+		    <ion-row>
+		      <ion-badge style="width: calc(100% - 10px); margin: 5px; padding: 9px 0px; font-size: 3.2vw; height: 30px;" item-start color="utama">Deskripsi Paket</ion-badge>
+		    </ion-row>
+		    <ion-list>
+		    	<button ion-item style="padding-left: 15px;" (click)="ubahtipepaket('Pilih Jenis Kiriman','Jenis Paket','namanbarang','text')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Jenis Paket</b></span><br>
+		          <span style="font-size: 3.2vw;">
+		          	<ng-container *ngIf="itemtype=='1'; then pakets; else surats"></ng-container>
+		          	<ng-template #pakets>PAKET</ng-template>
+		          	<ng-template #surats>SURAT</ng-template>
+		          	, {{namanbarang}}
+		          </span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Berat Barang (gram)','Masukkan berat barang','beratbarang','number')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Berat</b></span><br>
+		          <span style="font-size: 3.2vw;">{{beratbarang}} gram</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+		        <button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Nilai Barang (optional)','Masukkan nilai barang','nilaibarang','number')">
+		          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Nilai Barang (optional)</b></span><br>
+		          <span style="font-size: 3.2vw;">Rp. {{nilaibarang | number}}</span>
+		          <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+		        </button>
+
+		        <ion-row>
+					<ion-col>
+						<button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Panjang Barang (cm)','Masukkan panjang barang','panjangbarang','number')">
+				          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Panjang</b></span><br>
+				          <span style="font-size: 3.2vw;">{{panjangbarang}} cm</span>
+				          <!-- <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" /> -->
+				        </button>
+					</ion-col>
+					<ion-col>
+						<button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Lebar Barang (cm)','Masukkan lebar barang','lebarbarang','number')">
+				          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Lebar</b></span><br>
+				          <span style="font-size: 3.2vw;">{{lebarbarang}} cm</span>
+				          <!-- <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" /> -->
+				        </button>
+					</ion-col>
+					<ion-col>
+						<button ion-item style="padding-left: 15px;" (click)="ubahbiasa('Perubahan Tinggi Barang (cm)','Masukkan tinggi barang','tinggibarang','number')">
+				          <span style="font-size: 3vw; white-space: pre-wrap !important;"><b>Tinggi</b></span><br>
+				          <span style="font-size: 3.2vw;">{{tinggibarang}} cm</span>
+				          <!-- <img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" /> -->
+				        </button>
+					</ion-col>
+				</ion-row>
+		    </ion-list>
+
+		    <ion-row>
+		      <ion-badge style="width: calc(100% - 10px); margin: 5px; padding: 9px 0px; font-size: 3.2vw; height: 30px;" item-start color="utama">Layanan Kiriman</ion-badge>
+		    </ion-row>
+		    <ion-list>
+
+		    	<ng-container *ngIf="serviceid==''; then red; else nored"></ng-container>
+		    	<ng-template #red>
+		    		<button ion-item style="padding-left: 15px; border-bottom: 1px solid #FFE7E7; background-color: #FFE7E7;" (click)="cek_tarif()">
+		    			<span style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px;"><b>{{serviceid}} - {{servicename}}</b></span>
+						<p style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px; color: black;">Ongkir : <b>Rp. {{ongkirok | number}}</b></p>
+						<p style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px; color: black;">Asuransi : <b>Rp. {{asuransiok | number}}</b></p>
+						<p style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px; color: black;">Total Kirim : <b>Rp. {{total | number}}</b></p>
+						<img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+			        </button>
+		    	</ng-template>
+		    	<ng-template #nored>
+		    		<button ion-item style="padding-left: 15px; border-bottom: 1px solid #FFE7E7; background-color: white; color: black;" (click)="cek_tarif()">
+	    				<span style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px;"><b>{{serviceid}} - {{servicename}}</b></span>
+						<p style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px; color: black;">Ongkir : <b>Rp. {{ongkirok | number}}</b></p>
+						<p style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px; color: black;">Asuransi : <b>Rp. {{asuransiok | number}}</b></p>
+						<p style="font-size: 3.2vw; white-space: pre-wrap !important; margin-top: 10px; color: black;">Total Kirim : <b>Rp. {{total | number}}</b></p>
+						<img item-end style="width: 13px; margin-left: 0px; margin-right: 5px;" src="assets/icon/right.svg" />
+			        </button>
+		    	</ng-template>
+		    </ion-list>
+
+			<button ion-button round block (click)="doSubmit()" color="utama" style="margin: 20px 10px 30px 10px; width: calc(100% - 20px);">Submit</button>
+		</ng-template>
+	</ng-template>
+
+
+</ion-content>
