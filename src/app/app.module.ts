@@ -20,11 +20,13 @@ import { DriverHistoryDetailPage } from '../pages/driver/driver-history-detail/d
 
 import { KoorHomePage } from '../pages/koordinator/koor-home/koor-home';
 import { KoorDetailTransaksiPage } from '../pages/koordinator/koor-detail-transaksi/koor-detail-transaksi';
+import { KoorDetailTransaksiKorpPage } from '../pages/koordinator/koor-detail-transaksi-korp/koor-detail-transaksi-korp';
 import { KoorPickDriverPage } from '../pages/koordinator/koor-pick-driver/koor-pick-driver';
 import { KoorHistoryPage } from '../pages/koordinator/koor-history/koor-history';
 import { KoorHistoryDetailPage } from '../pages/koordinator/koor-history-detail/koor-history-detail';
 import { KoorReassigmentPage } from '../pages/koordinator/koor-reassigment/koor-reassigment';
 import { KoorReassigmentDetailPage } from '../pages/koordinator/koor-reassigment-detail/koor-reassigment-detail';
+import { KoorPickDriverKorpPage } from '../pages/koordinator/koor-pick-driver-korp/koor-pick-driver-korp';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -56,11 +58,13 @@ import { AppVersion } from '@ionic-native/app-version';
     DriverHistoryDetailPage,
     KoorHomePage,
     KoorDetailTransaksiPage,
+    KoorDetailTransaksiKorpPage,
     KoorPickDriverPage,
     KoorHistoryPage,
     KoorHistoryDetailPage,
     KoorReassigmentPage,
     KoorReassigmentDetailPage,
+    KoorPickDriverKorpPage,
     SearchPostalPage,
   ],
   imports: [
@@ -87,11 +91,13 @@ import { AppVersion } from '@ionic-native/app-version';
     DriverHistoryDetailPage,
     KoorHomePage,
     KoorDetailTransaksiPage,
+    KoorDetailTransaksiKorpPage,
     KoorPickDriverPage,
     KoorHistoryPage,
     KoorHistoryDetailPage,
     KoorReassigmentPage,
     KoorReassigmentDetailPage,
+    KoorPickDriverKorpPage,
     SearchPostalPage,
   ],
   providers: [

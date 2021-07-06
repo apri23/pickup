@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, LoadingController, AlertController, ToastController, MenuController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AccessProvider } from '../../providers/access-providers';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { LoginPage } from '../../login/login';
 import { KoorDetailTransaksiPage } from '../koor-detail-transaksi/koor-detail-transaksi';
+import { KoorDetailTransaksiKorpPage } from '../koor-detail-transaksi-korp/koor-detail-transaksi-korp';
 import { KoorHistoryPage } from '../koor-history/koor-history';
 import { KoorReassigmentPage } from '../koor-reassigment/koor-reassigment';
 
@@ -18,9 +20,16 @@ declare var window;
 export class KoorHomePage {
 	tgl_show:any;
 	items:any;
+  itemsall:any;
+  itemsritel:any = [];
+  itemskoorporat1:any = [];
+  itemskoorporat2:any = [];
   login_data:any = { idpetugas: '', jabatan: '', kdkantor: '', username: '', deviceid: ''};
   page:any = 'all';
   cek_out:any = '0';
+
+  statusfilter:any;
+  pfilterstatus:any = false;
 
   constructor(
     public platform: Platform,
@@ -31,7 +40,8 @@ export class KoorHomePage {
   	private storage: Storage,
     private accsPrvds: AccessProvider,
     public toastCtrl: ToastController,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private statusBar: StatusBar
   ) {
     this.menuCtrl.enable(false, 'myMenu');
     window.koorhome = this;
@@ -60,7 +70,41 @@ export class KoorHomePage {
     setTimeout(() => {
       this.accsPrvds.post_pos_2(body, 'getpickuporder').subscribe((res:any)=>{
         refresher.complete();
-        this.items = res.response.data;
+        this.itemsall = [];
+        this.itemsritel = [];
+        this.itemskoorporat1 = [];
+        this.itemskoorporat2 = [];
+        res.response.data.forEach((dt, index) => {
+          if(dt.customer_id == 'QOB'){
+            let ritel = dt;
+            this.itemsritel.push(ritel);
+            this.itemsall.push(ritel);
+          } else {
+            let korporat = dt;
+            this.itemskoorporat1.push(korporat);
+          }
+        });
+        let group = this.itemskoorporat1.reduce((r, a) => {
+         r[a.customer_id] = [...r[a.customer_id] || [], a];
+         return r;
+        }, {});
+        let korp = Object.values(group);
+        korp.forEach((dt, index) => {
+          let sum:number = 0;
+          for (let i = 0; i < korp[index].length; i++) {
+              sum += Math.round(korp[index][i].itemsmoneysum);
+          }
+          let kopror = { customer_id: korp[index][0].customer_id, sendername: korp[index][0].sendername, senderphone: korp[index][0].senderphone, senderaddress: korp[index][0].senderaddress, ttlmoney: sum, dt: korp[index], latitude: korp[index][0].latitude, longitude: korp[index][0].longitude, itemsgrweightsum: korp[index][0].itemsgrweightsum, valuegoodssum: korp[index][0].valuegoodssum, };
+          this.itemsall.push(kopror);
+          this.itemskoorporat2.push(kopror);
+        });
+        if(this.statusfilter == 'RITEL'){
+          this.items = this.itemsritel;
+        } else if(this.statusfilter == 'KORPORAT'){
+          this.items = this.itemskoorporat2;
+        } else {
+          this.items = this.itemsall;
+        }
       },(err)=>{
         refresher.complete();
         this.presentToast('Sedang terjadi kesalahan, coba beberapa saat lagi..');
@@ -111,6 +155,64 @@ export class KoorHomePage {
     });
   }
 
+  resetfilter(){
+    this.pfilterstatus = false;
+    this.statusfilter = undefined;
+    this.items = this.itemsall;
+  }
+
+  filterstatus(statusfilter){
+    const prompt = this.alertCtrl.create({
+      message: "Pilih pelanggan dibawah ini :",
+      mode: "ios",
+      inputs: [
+        {
+          type: 'radio',
+          label: 'RITEL',
+          value: '1~RITEL',
+          checked: !(statusfilter == 'RITEL') ? false : true
+        },
+        {
+          type: 'radio',
+          label: 'KORPORAT',
+          value: '2~KORPORAT',
+          checked: !(statusfilter == 'KORPORAT') ? false : true
+        },
+      ],
+      buttons: [
+        {
+          text: 'Tutup',
+          handler: data => {
+            
+          }
+        },
+        {
+          text: 'Terapkan',
+          handler: data => {
+            if(data == undefined){
+              this.presentToast('pilih salah satu..');
+              return false;
+            } else {
+              let sts = data.split('~');
+              this.pfilterstatus = true;
+              this.statusfilter = sts[1];
+              this.filterdata(sts[0]);
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  filterdata(filter){
+    if(filter == '1'){
+      this.items = this.itemsritel;
+    } else if(filter == '2'){
+      this.items = this.itemskoorporat2;
+    }
+  }
+
   get_data(kdkantor){
     const loader = this.loadingCtrl.create({
       spinner: 'dots'
@@ -123,7 +225,43 @@ export class KoorHomePage {
 
     this.accsPrvds.post_pos_2(body, 'getpickuporder').subscribe((res:any)=>{
       loader.dismiss();
-      this.items = res.response.data;
+      // console.log(res.response.data)
+      this.itemsall = [];
+      this.itemsritel = [];
+      this.itemskoorporat1 = [];
+      this.itemskoorporat2 = [];
+      res.response.data.forEach((dt, index) => {
+        if(dt.customer_id == 'QOB'){
+          let ritel = dt;
+          this.itemsritel.push(ritel);
+          this.itemsall.push(ritel);
+        } else {
+          let korporat = dt;
+          this.itemskoorporat1.push(korporat);
+        }
+      });
+      let group = this.itemskoorporat1.reduce((r, a) => {
+       r[a.customer_id] = [...r[a.customer_id] || [], a];
+       return r;
+      }, {});
+      let korp = Object.values(group);
+      korp.forEach((dt, index) => {
+        let sum:number = 0;
+        for (let i = 0; i < korp[index].length; i++) {
+            sum += Math.round(korp[index][i].itemsmoneysum);
+        }
+        let indexitem:number = korp[index].length-1;
+        let kopror = { customer_id: korp[index][0].customer_id, sendername: korp[index][0].sendername, senderphone: korp[index][0].senderphone, senderaddress: korp[index][0].senderaddress, ttlmoney: sum, dt: korp[index], latitude: korp[index][indexitem].latitude, longitude: korp[index][indexitem].longitude };
+        this.itemsall.push(kopror);
+        this.itemskoorporat2.push(kopror);
+      });
+      if(this.statusfilter == 'RITEL'){
+        this.items = this.itemsritel;
+      } else if(this.statusfilter == 'KORPORAT'){
+        this.items = this.itemskoorporat2;
+      } else {
+        this.items = this.itemsall;
+      }
     },(err)=>{
       this.presentToast('Sedang terjadi kesalahan, coba beberapa saat lagi..');
       loader.dismiss();
@@ -138,11 +276,18 @@ export class KoorHomePage {
   }
 
   detail_trx(item,convert_date){
-  	let result = {
-          'data': item,
-          'convert_date': convert_date
-    };
-    this.navCtrl.push(KoorDetailTransaksiPage,result);
+    if(item.customer_id == 'QOB'){
+      let result = {
+        'data': item,
+        'convert_date': convert_date
+      };
+      this.navCtrl.push(KoorDetailTransaksiPage,result);
+    } else {
+      let result = {
+        'data': item
+      };
+      this.navCtrl.push(KoorDetailTransaksiKorpPage,result);
+    }
   }
 
   to_history(){
@@ -180,10 +325,10 @@ export class KoorHomePage {
           handler: () => {
           	loader.present();
           	this.storage.clear();
-			setTimeout(() => {
-				this.navCtrl.push(LoginPage);
-				loader.dismiss();
-			}, 1000);
+      			setTimeout(() => {
+      				this.navCtrl.push(LoginPage);
+      				loader.dismiss();
+      			}, 1000);
           }
         }
       ]

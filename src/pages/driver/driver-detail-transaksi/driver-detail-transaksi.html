@@ -22,12 +22,29 @@
 
   <ion-card class="card-mids">
     <ion-list lines>
-      <button ion-item style="padding-left: 10px;">
+      <!-- <button ion-item style="padding-left: 10px;">
         <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profile.svg" />
         <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
         <span style="font-size: 3vw;">ID Klien : {{data_result.clientid}}</span>
         <img item-end style="width: 25px; margin-right: 5px;" src="assets/icon/telephone.svg" (click)="call(data_result.senderphone)" />
-      </button>
+      </button> -->
+      <ng-container *ngIf="data_result.customer_id=='QOB'; then ritel; else koorporat"></ng-container>
+        <ng-template #ritel>
+          <button ion-item style="padding-left: 10px;">
+            <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profileritel.svg" />
+            <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+            <span style="font-size: 3vw;">Pelanggan Ritel</span>
+            <img item-end style="width: 25px; margin-right: 5px;" src="assets/icon/telephone.svg" (click)="call(data_result.senderphone)" />
+          </button>
+        </ng-template>
+        <ng-template #koorporat>
+          <button ion-item style="padding-left: 10px;">
+            <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profilekorporat.svg" />
+            <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+            <span style="font-size: 3vw;">Pelanggan Korporat ({{data_result.customer_id}})</span>
+            <img item-end style="width: 25px; margin-right: 5px;" src="assets/icon/telephone.svg" (click)="call(data_result.senderphone)" />
+          </button>
+        </ng-template>
     </ion-list>
   </ion-card>
 

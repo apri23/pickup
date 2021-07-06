@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ToastController } from 'ionic-angular';
+import { AccessProvider } from '../../providers/access-providers';
 import {
   GoogleMaps,
   GoogleMap,
@@ -19,11 +20,14 @@ export class DriverHistoryDetailPage {
 	page:any = 'driverdetailhistory';
 	data_result:any;
 	mapshiden:any = true;
+  pakets:any;
 
   constructor(
   	public navCtrl: NavController, 
   	public navParams: NavParams,
   	public platform: Platform,
+    private accsPrvds: AccessProvider,
+    public toastCtrl: ToastController,
   	) {
   	this.platform.registerBackButtonAction(() => {
       if(this.page == 'driverdetailhistory'){
@@ -35,6 +39,25 @@ export class DriverHistoryDetailPage {
     this.data_result = navParams.get('data');
     lat = this.data_result.latitude;
     lng = this.data_result.longitude;
+    this.get_item();
+  }
+
+  presentToastsukses(msg) {
+    const toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      cssClass: "custom-classs",
+    });
+    toast.present();
+  }
+
+  presentToastgagal(msg) {
+    const toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      cssClass: "custom-classs",
+    });
+    toast.present();
   }
 
   date_format(date1){
@@ -95,6 +118,27 @@ export class DriverHistoryDetailPage {
   		this.mapshiden = true;
   		map.clear();
   	}
+  }
+
+  get_item(){
+    let body = {
+      pickupid: this.data_result.pickupid
+    };
+    this.pakets = null;
+
+    this.accsPrvds.post_pos_2(body, 'getdetailpickuporder').subscribe((res:any)=>{
+      this.pakets = res.response.data;
+      // console.log(res.response.data)
+    },(err)=>{
+      this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
+      this.pakets = '';
+    });
+  }
+
+  cnvrt(strg){
+    var matches = strg.match(/\b(\w)/g);
+    var acronym = matches.join('');
+    return acronym;
   }
 
 }

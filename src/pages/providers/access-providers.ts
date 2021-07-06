@@ -18,6 +18,7 @@ export class AccessProvider{
 	posserver3: string = 'https://jembatan.posindonesia.co.id/utility/2.0.0/';
 	posserver2: string = 'https://jembatan.posindonesia.co.id/pickupcoordinatordev/1.0.0/';
 	posserver2_1: string = 'https://jembatan.posindonesia.co.id/pickupdev/1.0.0/';
+	sampoerna: string = 'http://10.60.64.76:9445/sampoerna/orderbooking/';
 	user:string = 'xxx';
 	password:string = 'yyy';
 
@@ -172,6 +173,19 @@ export class AccessProvider{
 		}
 
 		return this.http.post(this.server + file, JSON.stringify(body), options)
+		.timeout(59000)
+		.map(res => res);
+	}
+
+	post_sampoerna_1(body, file){
+		let headers = new HttpHeaders({
+			'X-POS-KEY': '4b00852c53c55037676fd7813cddcf70'
+		});
+		let options = {
+			headers: headers
+		}
+
+		return this.http.post(this.sampoerna + file, JSON.stringify(body), options)
 		.timeout(59000)
 		.map(res => res);
 	}

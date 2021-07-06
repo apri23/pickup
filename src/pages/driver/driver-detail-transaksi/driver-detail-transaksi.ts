@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, LoadingController, AlertController, ToastController, PopoverController, Item, ItemSliding, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, LoadingController, AlertController, ToastController, PopoverController, Item, ItemSliding, ModalController, ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AccessProvider } from '../../providers/access-providers';
 import { CallNumber } from '@ionic-native/call-number';
@@ -38,10 +38,10 @@ export class DriverDetailTransaksiPage {
     public popoverCtrl: PopoverController,
     private callNumber: CallNumber,
     public modalCtrl: ModalController,
+    public actionSheetCtrl: ActionSheetController
   ) {
   	this.data_result = navParams.get('data');
     this.status = navParams.get('status');
-    // console.log(this.status)
     this.convert_date = navParams.get('convert_date');
     this.platform.registerBackButtonAction(() => {
       if(this.page == 'detaildrivertrx'){
@@ -218,7 +218,8 @@ export class DriverDetailTransaksiPage {
 
   validasi_paket(paket){
     let result = {
-          'data': paket
+          'data': paket,
+          'data_customer': this.data_result
     };
     this.navCtrl.push(DriverValidasiPaketPage,result);
   }
@@ -360,7 +361,34 @@ export class DriverDetailTransaksiPage {
     let result = {
           'data': this.data_result
     };
-    this.navCtrl.push(DriverRutePage,result);
+    let actionSheet = this.actionSheetCtrl.create({
+     title: 'Pilih Navigasi',
+     buttons: [
+       {
+         text: 'Navigasi Bawaan',
+         handler: () => {
+            this.navCtrl.push(DriverRutePage,result);
+         }
+       },
+       {
+         text: 'Navigasi Google Maps',
+         handler: () => {
+            let destination = this.data_result.latitude+','+this.data_result.longitude;
+            let label = encodeURI('My Label');
+            window.open('geo:0,0?q='+destination+'('+label+')', '_system');
+         }
+       },
+       {
+         text: 'Tutup',
+         role: 'cancel',
+         handler: () => {
+           
+         }
+       }
+     ]
+   });
+
+   actionSheet.present();
   }
 
   showbarcode(datapaket){

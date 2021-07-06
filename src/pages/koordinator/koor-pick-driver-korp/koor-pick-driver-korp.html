@@ -1,0 +1,69 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">Assignment Oranger</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content">
+
+	<ion-row (click)="showmoreitem()">
+  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw; border-radius: 0px;" item-start color="korporat">
+  			Total {{data_pickup.length}} Request Pickup 
+  			<ng-container *ngIf="min===true; then minss; else maxss"></ng-container>
+            <ng-template #minss>
+  				<ion-icon style="float: right; margin-right: 20px;" ios="ios-arrow-dropdown" md="md-arrow-dropdown"></ion-icon>
+            </ng-template>
+            <ng-template #maxss>
+            	<ion-icon style="float: right; margin-right: 20px;" ios="ios-arrow-dropup" md="md-arrow-dropup"></ion-icon>
+            </ng-template>
+            
+  		</ion-badge>
+  	</ion-row>
+  	<ng-container *ngIf="min===true; then mins; else maxs"></ng-container>
+    <ng-template #mins>
+
+    </ng-template>
+    <ng-template #maxs>
+    	<ion-list class="ion-scroll">
+			<ion-card *ngFor="let item of data_pickup; let i = index;" class="card-midsc">
+				<ion-item  no-lines>
+		        	<ion-label class="labels">
+		        		<h3>
+					        <b><span style="font-size: 3vw;"><span style="font-size: 3.3vw;">{{item.sendername}}</span> - {{item.pickupid}}</span></b>
+		        		</h3>
+		        		<h3>
+					        <b><span style="font-size: 3vw;">{{item.senderaddress}}</span></b>
+		        		</h3>
+		        		<h3 style="margin-top: 4px; background-color: #D7D7FF; padding: 3px 10px; border-radius: 8px;">
+		        			<span *ngFor="let paket of item.item; let it = index;" style="background: transparent; padding: 0px; margin: 0px;">
+		        				<h5 style="font-size: 3vw;">
+		        					<b>{{paket.desctrans}}</b> <br> B: <b>{{paket.itemskgweight}}</b> kg | P: <b>{{ paket.length | number }}</b> cm | L: <b>{{ paket.width | number }} cm</b> | T: <b>{{ paket.height | number }} cm</b>
+		        				</h5>
+		        			</span>
+		        		</h3>
+		        		<h3 style="margin: 3px 0px 8px 0px;">
+		        			<b style="font-size: 3.5vw; float: right;">Rp. {{item.itemsmoneysum | number }}</b>
+		        		</h3>
+		        	</ion-label>
+		    	</ion-item>
+	        </ion-card>
+		</ion-list>
+    </ng-template>
+
+	<ion-card class="card-mids">
+		<div #map_canvas id="map_canvas"></div>
+	</ion-card>
+
+	<button style="margin: 10px; width: calc(100% - 20px); border-radius: 10px" ion-button icon-start full color="korporat" (click)="assigment()">
+		ASSIGNMENT
+	</button>
+
+</ion-content>

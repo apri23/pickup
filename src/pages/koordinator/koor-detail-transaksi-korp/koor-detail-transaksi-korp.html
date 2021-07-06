@@ -1,0 +1,71 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-grid style="padding: 0px;">
+      <ion-row>
+        <ion-col style="padding: 0px;">
+          <ion-title>
+            <ion-label class="title">Pickup Koorporat</ion-label>
+          </ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+
+	<ion-card class="card-mids">
+	    <ion-list lines>
+	      <button ion-item style="padding-left: 10px;">
+	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profilekorporat.svg" />
+	        <span style="font-size: 3.2vw;">ID Koporat : <b>{{res.customer_id}}</b></span>
+	      </button>
+	    </ion-list>
+	</ion-card>
+
+	<ion-row>
+  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw; border-radius: 0px;" item-start color="korporat">Request Pickup</ion-badge>
+  	</ion-row>
+
+	<ion-list class="ion-scroll">
+		<ion-card *ngFor="let item of data_result; let i = index;" class="card-midsc">
+			<ion-item  no-lines>
+	        <ion-checkbox [(ngModel)]="item.checked" style="margin: 0px 20px 0px 4px; padding: 0px;" size="small" color="korporat" (click)="sum_pickup()"></ion-checkbox>
+	        	<ion-label class="labels">
+	        		<h3>
+				        <b><span style="font-size: 3vw;"><span style="font-size: 3.3vw;">{{item.sendername}}</span> - {{item.pickupid}}</span></b>
+	        		</h3>
+	        		<h3>
+				        <b><span style="font-size: 3vw;">{{item.senderaddress}}</span></b>
+	        		</h3>
+	        		<h3 style="margin-top: 4px; background-color: #D7D7FF; padding: 3px 10px; border-radius: 8px;">
+	        			<span *ngFor="let paket of item.item; let it = index;" style="background: transparent; padding: 0px; margin: 0px;">
+	        				<h5 style="font-size: 3vw;">
+	        					<b>{{paket.desctrans}}</b> <br> B: <b>{{paket.itemskgweight}}</b> kg | P: <b>{{ paket.length | number }}</b> cm | L: <b>{{ paket.width | number }} cm</b> | T: <b>{{ paket.height | number }} cm</b>
+	        				</h5>
+	        			</span>
+	        		</h3>
+	        		<h3 style="margin: 3px 0px 8px 0px;">
+	        			<b style="font-size: 3.5vw; float: right;">Rp. {{item.itemsmoneysum | number }}</b>
+	        		</h3>
+	        	</ion-label>
+	    	</ion-item>
+        </ion-card>
+	</ion-list>
+
+	<ng-container *ngIf="data_result.length>=1; then shbtn; else noshbtn"></ng-container>
+    <ng-template #shbtn>
+		<button [disabled]="jml_proses==0" style="margin: 10px 10px; width: calc(100% - 20px);" ion-button block round color="korporat" (click)="proses_pick()">Proses Pickup 
+			<ng-container *ngIf="jml_proses==0; then hidejml; else jml"></ng-container>
+			<ng-template #hidejml></ng-template>
+			<ng-template #jml>
+				<ion-badge style="border-radius: 15px; margin-left: 5px; padding: 3px;" item-end color="secondary">{{jml_proses}}</ion-badge>
+			</ng-template>
+		</button>
+    </ng-template>
+    <ng-template #noshbtn>
+    	
+    </ng-template>
+
+
+</ion-content>

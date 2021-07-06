@@ -42,9 +42,10 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleLightContent();
+      this.statusBar.hide();
       this.splashScreen.hide();
       this.storage.get('storage_xxx_pickup_pos').then((res) => {
+        // console.log(res)
         if(res == null){
           this.rootPage = LoginPage;
         } else {

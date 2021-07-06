@@ -26,12 +26,30 @@
 	  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Pelanggan</ion-badge>
 	  	</ion-row>
 	    <ion-list lines>
-	      <button ion-item style="padding-left: 10px;" (click)="hidenmaps()">
+	    	<ng-container *ngIf="data_result.customer_id=='QOB'; then ritel; else koorporat"></ng-container>
+            <ng-template #ritel>
+		      <button ion-item style="padding-left: 10px;" (click)="hidenmaps()">
+		        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profileritel.svg" />
+		        <span style="font-size: 2.7vw;">Pelanggan Ritel</span><br>
+		        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+		        <span style="font-size: 2.7vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
+		      </button>
+		  	</ng-template>
+		  	<ng-template #koorporat>
+		  		<button ion-item style="padding-left: 10px;" (click)="hidenmaps()">
+			        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profilekorporat.svg" />
+			        <span style="font-size: 2.7vw;">Pelanggan Korporat ({{data_result.customer_id}})</span><br>
+			        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+			        <span style="font-size: 2.7vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
+			    </button>
+		  	</ng-template>
+		  	
+	      <!-- <button ion-item style="padding-left: 10px;" (click)="hidenmaps()">
 	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profile.svg" />
 	        <span style="font-size: 2.7vw;">ID Klien : {{data_result.clientid}}</span><br>
 	        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
 	        <span style="font-size: 2.7vw; white-space: pre-wrap !important;">{{data_result.senderaddress}}</span>
-	      </button>
+	      </button> -->
 	    </ion-list>
 	</ion-card>
 
@@ -48,6 +66,33 @@
 
 	<ion-card class="card-mids">
 		<ion-row>
+	  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Detail Paket</ion-badge>
+	  	</ion-row>
+	  	<ion-list lines>
+	  		<button ion-item *ngFor="let paket of pakets; let i = index;" style="padding: 0px 0px 0px 10px; margin: 5px 0px 5px 0px; border-bottom: 1px solid #FFE7E7;">
+              <img item-start style="width: 24px; margin-right: 10px;" src="assets/icon/package.svg" />
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">{{ paket.product }}</span><br>
+              <span style="white-space: pre-wrap !important;"><span style="font-size: 2.8vw;"><b>{{paket.orderid}}</b></span></span> - 
+              <span style="white-space: pre-wrap !important;"><span style="font-size: 3.2vw;">{{paket.desctrans}}</span></span><br>
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Pajang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.length | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.length | number }}</b> cm</span></span><br>
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemsgrweight | number }}</b> gram <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
+            </button>
+        </ion-list>
+	    <ion-list lines>
+	      <button ion-item style="padding-left: 10px;">
+	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/invoice.svg" />
+	        <span style="font-size: 3.2vw;">Total Nilai Barang : <b>Rp. {{data_result.valuegoodssum | number}}</b></span><br>
+	        <span style="font-size: 3.2vw;">Toal Berat : <b>{{data_result.itemsgrweightsum | number}}</b> gram</span>
+	      </button>
+	    </ion-list>
+	    <ion-row>
+          <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 3.2vw">Total <b>{{data_result.itemscount}}</b> Paket</ion-col>
+          <ion-col col-6 style="font-size: 4.3vw; padding-right: 8px;"><span style="float: right;"><b>Rp. {{data_result.itemsmoneysum | number }}</b></span></ion-col>
+        </ion-row>
+	</ion-card>
+
+	<ion-card class="card-mids">
+		<ion-row>
 	  		<ion-badge style="width: 100%; margin: 0px; padding: 9px 0px; font-size: 3.2vw" item-start color="utama">Transaksi (Total Paket)</ion-badge>
 	  	</ion-row>
 	    <ion-list lines>
@@ -59,16 +104,7 @@
 	        <span style="font-size: 3.2vw;">Tiba di Kantor Pos : <b>{{data_result.arrivedatpostoffice}}</b></span><br>
 	        <span style="font-size: 3.2vw;">Batal pickup : <b>{{data_result.cancelpickuptotal}}</b></span><br>
 	      </button>
-	      <button ion-item style="padding-left: 10px;">
-	        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/package.svg" />
-	        <span style="font-size: 3.2vw;">Nilai Barang : <b>Rp. {{data_result.valuegoodssum | number}}</b></span><br>
-	        <span style="font-size: 3.2vw;">Toal Berat : <b>{{data_result.itemsgrweightsum | number}}</b> gram</span>
-	      </button>
 	    </ion-list>
-	    <ion-row>
-          <ion-col col-6 style="padding-top: 15px; padding-left: 8px; font-size: 3.2vw">Total <b>{{data_result.itemscount}}</b> Paket</ion-col>
-          <ion-col col-6 style="font-size: 4.3vw; padding-right: 8px;"><span style="float: right;"><b>Rp. {{data_result.itemsmoneysum | number }}</b></span></ion-col>
-        </ion-row>
 	</ion-card>
 	
 </ion-content>

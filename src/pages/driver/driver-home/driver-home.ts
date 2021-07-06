@@ -17,8 +17,17 @@ declare var window;
 export class DriverHomePage {
   tgl_show:any;
   items:any;
-  itemss:any;
+  itemsall:any;
+  itemsritel:any = [];
+  itemskoorporat:any = [];
   itemsd:any;
+  itemsdall:any;
+  itemsdritel:any = [];
+  itemsdkoorporat:any = [];
+  itemss:any;
+  itemssall:any;
+  itemssritel:any = [];
+  itemsskoorporat:any = [];
   login_data:any = { idpetugas: '', jabatan: '', kdkantor: '', username: '', deviceid: ''};
   pet:any;
   lengtha:any = 0;
@@ -27,6 +36,9 @@ export class DriverHomePage {
   min:any = true;
   page:any = 'all';
   cek_out:any = '0';
+
+  statusfilter:any;
+  pfilterstatus:any = false;
 
   constructor(
     public platform: Platform,
@@ -74,7 +86,26 @@ export class DriverHomePage {
       setTimeout(() => {
         this.accsPrvds.post_pos_2_1(body, 'getpickuporder').subscribe((res:any)=>{
           refresher.complete();
-          this.items = res.response.data;
+          // this.items = res.response.data;
+          this.itemsall = res.response.data;
+          this.itemsritel = [];
+          this.itemskoorporat = [];
+          res.response.data.forEach((dt, index) => {
+            if(dt.customer_id == 'QOB'){
+              let ritel = dt;
+              this.itemsritel.push(ritel);
+            } else {
+              let korporat = dt;
+              this.itemskoorporat.push(korporat);
+            }
+          });
+          if(this.statusfilter == 'RITEL'){
+            this.items = this.itemsritel;
+          } else if(this.statusfilter == 'KORPORAT'){
+            this.items = this.itemskoorporat;
+          } else {
+            this.items = this.itemsall;
+          }
         },(err)=>{
           refresher.complete();
           this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
@@ -89,7 +120,24 @@ export class DriverHomePage {
       setTimeout(() => {
         this.accsPrvds.post_pos_2_1(body, 'getpickuporder').subscribe((res:any)=>{
           refresher.complete();
-          this.itemsd = res.response.data;
+          // this.itemsd = res.response.data;
+          this.itemsdall = res.response.data;
+          this.itemsdritel = [];
+          this.itemsdkoorporat = [];
+          res.response.data.forEach((dt, index) => {
+            if(dt.customer_id == 'QOB'){
+              this.itemsdritel.push(dt);
+            } else {
+              this.itemsdkoorporat.push(dt);
+            }
+          });
+          if(this.statusfilter == 'RITEL'){
+            this.itemsd = this.itemsdritel;
+          } else if(this.statusfilter == 'KORPORAT'){
+            this.itemsd = this.itemsdkoorporat;
+          } else {
+            this.itemsd = this.itemsdall;
+          }
         },(err)=>{
           refresher.complete();
           this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
@@ -104,7 +152,24 @@ export class DriverHomePage {
       setTimeout(() => {
         this.accsPrvds.post_pos_2_1(body, 'getpickuporder').subscribe((res:any)=>{
           refresher.complete();
-          this.itemss = res.response.data;
+          // this.itemss = res.response.data;
+          this.itemssall = res.response.data;
+          this.itemssritel = [];
+          this.itemsskoorporat = [];
+          res.response.data.forEach((dt, index) => {
+            if(dt.customer_id == 'QOB'){
+              this.itemssritel.push(dt);
+            } else {
+              this.itemsskoorporat.push(dt);
+            }
+          });
+          if(this.statusfilter == 'RITEL'){
+            this.itemss = this.itemssritel;
+          } else if(this.statusfilter == 'KORPORAT'){
+            this.itemss = this.itemsskoorporat;
+          } else {
+            this.itemss = this.itemssall;
+          }
         },(err)=>{
           refresher.complete();
           this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
@@ -202,7 +267,24 @@ export class DriverHomePage {
 
     this.accsPrvds.post_pos_2_1(body, 'getpickuporder').subscribe((res:any)=>{
       loader.dismiss();
-      this.items = res.response.data;
+      // this.items = res.response.data;
+      this.itemsall = res.response.data;
+      this.itemsritel = [];
+      this.itemskoorporat = [];
+      res.response.data.forEach((dt, index) => {
+        if(dt.customer_id == 'QOB'){
+          this.itemsritel.push(dt);
+        } else {
+          this.itemskoorporat.push(dt);
+        }
+      });
+      if(this.statusfilter == 'RITEL'){
+        this.items = this.itemsritel;
+      } else if(this.statusfilter == 'KORPORAT'){
+        this.items = this.itemskoorporat;
+      } else {
+        this.items = this.itemsall;
+      }
     },(err)=>{
       this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
       loader.dismiss();
@@ -235,7 +317,24 @@ export class DriverHomePage {
 
     this.accsPrvds.post_pos_2_1(body, 'getpickuporder').subscribe((res:any)=>{
       loader.dismiss();
-      this.itemsd = res.response.data;
+      // this.itemsd = res.response.data;
+      this.itemsdall = res.response.data;
+      this.itemsdritel = [];
+      this.itemsdkoorporat = [];
+      res.response.data.forEach((dt, index) => {
+        if(dt.customer_id == 'QOB'){
+          this.itemsdritel.push(dt);
+        } else {
+          this.itemsdkoorporat.push(dt);
+        }
+      });
+      if(this.statusfilter == 'RITEL'){
+        this.itemsd = this.itemsdritel;
+      } else if(this.statusfilter == 'KORPORAT'){
+        this.itemsd = this.itemsdkoorporat;
+      } else {
+        this.itemsd = this.itemsdall;
+      }
     },(err)=>{
       this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
       loader.dismiss();
@@ -325,7 +424,26 @@ export class DriverHomePage {
 
     this.accsPrvds.post_pos_2_1(body, 'getpickuporder').subscribe((res:any)=>{
       loader.dismiss();
-      this.itemss = res.response.data;
+      // this.itemss = res.response.data;
+      this.itemssall = res.response.data;
+      this.itemssritel = [];
+      this.itemsskoorporat = [];
+      res.response.data.forEach((dt, index) => {
+        if(dt.customer_id == 'QOB'){
+          let ritel = dt;
+          this.itemssritel.push(ritel);
+        } else {
+          let korporat = dt;
+          this.itemsskoorporat.push(korporat);
+        }
+      });
+      if(this.statusfilter == 'RITEL'){
+        this.itemss = this.itemssritel;
+      } else if(this.statusfilter == 'KORPORAT'){
+        this.itemss = this.itemsskoorporat;
+      } else {
+        this.itemss = this.itemssall;
+      }
     },(err)=>{
       this.presentToastgagal('Sedang terjadi kesalahan, coba beberapa saat lagi..');
       loader.dismiss();
@@ -473,6 +591,80 @@ export class DriverHomePage {
         }]
     });
     alert.present();
+  }
+
+  filterstatus(statusfilter){
+    const prompt = this.alertCtrl.create({
+      message: "Pilih pelanggan dibawah ini :",
+      mode: "ios",
+      inputs: [
+        {
+          type: 'radio',
+          label: 'RITEL',
+          value: '1~RITEL',
+          checked: !(statusfilter == 'RITEL') ? false : true
+        },
+        {
+          type: 'radio',
+          label: 'KORPORAT',
+          value: '2~KORPORAT',
+          checked: !(statusfilter == 'KORPORAT') ? false : true
+        },
+      ],
+      buttons: [
+        {
+          text: 'Tutup',
+          handler: data => {
+            
+          }
+        },
+        {
+          text: 'Terapkan',
+          handler: data => {
+            if(data == undefined){
+              this.presentToastgagal('pilih salah satu..');
+              return false;
+            } else {
+              let sts = data.split('~');
+              this.pfilterstatus = true;
+              this.statusfilter = sts[1];
+              this.filterdata(sts[0]);
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  filterdata(filter){
+    if(this.pet == 'puppies'){
+      if(filter == '1'){
+        this.items = this.itemsritel;
+      } else if(filter == '2'){
+        this.items = this.itemskoorporat;
+      }
+    } else if(this.pet == 'wolfs'){
+      if(filter == '1'){
+        this.itemsd = this.itemsdritel;
+      } else if(filter == '2'){
+        this.itemsd = this.itemsdkoorporat;
+      }
+    } else if(this.pet == 'kittens'){
+      if(filter == '1'){
+        this.itemss = this.itemssritel;
+      } else if(filter == '2'){
+        this.itemss = this.itemsskoorporat;
+      }
+    }
+  }
+
+  resetfilter(){
+    this.pfilterstatus = false;
+    this.statusfilter = undefined;
+    this.items = this.itemsall;
+    this.itemsd = this.itemsdall;
+    this.itemss = this.itemssall;
   }
 
 }

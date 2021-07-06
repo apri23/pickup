@@ -22,11 +22,21 @@
 
   <ion-card class="card-mids">
     <ion-list lines>
-      <button ion-item style="padding-left: 10px;">
-        <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profile.svg" />
-        <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
-        <span style="font-size: 3vw;">ID Klien : {{data_result.clientid}}</span>
-      </button>
+        <ng-container *ngIf="data_result.customer_id=='QOB'; then ritel; else koorporat"></ng-container>
+        <ng-template #ritel>
+          <button ion-item style="padding-left: 10px;">
+            <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profileritel.svg" />
+            <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+            <span style="font-size: 3vw;">Pelanggan Ritel</span>
+          </button>
+        </ng-template>
+        <ng-template #koorporat>
+          <button ion-item style="padding-left: 10px;">
+            <img item-start style="width: 30px; margin: 0px 15px 0px 0px;" src="assets/icon/profilekorporat.svg" />
+            <span style="font-size: 3.2vw;"><b>{{data_result.sendername}} - {{data_result.senderphone}}</b></span><br>
+            <span style="font-size: 3vw;">Pelanggan Korporat ({{data_result.customer_id}})</span>
+          </button>
+        </ng-template>
     </ion-list>
   </ion-card>
 
@@ -77,8 +87,8 @@
               <img item-start style="width: 24px; margin-right: 10px;" src="assets/icon/package.svg" />
               <span style="white-space: pre-wrap !important;"><span style="font-size: 2.8vw;"><b>{{paket.orderid}}</b></span></span> - 
               <span style="white-space: pre-wrap !important;"><span style="font-size: 3.2vw;">{{paket.desctrans}}</span></span><br>
-              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Pajang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.length | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.length | number }}</b> cm</span></span><br>
-              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemsgrweight | number }}</b> gram <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Panjang : <b>{{ paket.length | number }}</b> cm <span style="margin-left: 15px;">Lebar : <b>{{ paket.width | number }}</b> cm </span><span style="margin-left: 15px;">Tinggi : <b>{{ paket.height | number }}</b> cm</span></span><br>
+              <span style="font-size: 2.8vw; white-space: pre-wrap !important;">Berat : <b>{{ paket.itemskgweight | number }}</b> kg <b style="float: right; font-size: 3.3vw;">Rp. {{paket.itemsmoney | number }}</b></span>
             </button>
           </ng-template>
 

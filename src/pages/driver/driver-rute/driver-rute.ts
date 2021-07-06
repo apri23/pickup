@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController, ToastController, PopoverController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { AccessProvider } from '../../providers/access-providers';
 import {
   GoogleMaps,
   GoogleMap,
@@ -34,6 +35,7 @@ export class DriverRutePage {
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public popoverCtrl: PopoverController,
+    private accsPrvds: AccessProvider,
   ) {
   	this.data_result = navParams.get('data');
     latend = this.data_result.latitude;
@@ -83,36 +85,25 @@ export class DriverRutePage {
 
   myposition(){
     this.watchId = this.geolocation.watchPosition().subscribe(pos => {
-      console.log(pos.coords.longitude + ' ' + pos.coords.latitude);
+      // console.log(pos.coords.longitude + ' ' + pos.coords.latitude);
       lat = pos.coords.latitude;
       lng = pos.coords.longitude;
+      this.getroute();
+    });
+  }
+
+  getroute(){
+    this.accsPrvds.get_route(lat, lng, latend, lngend).subscribe((result:any)=>{
+      shaperoute = result.response.route[0].leg[0].shape;
+      // console.log(result.response.route[0].leg[0].shape)
       this.searchroute();
+    },(err)=>{
+      this.presentToast('Sedang terjadi kesalahan, coba beberapa saat lagi..');
     });
   }
 
   searchroute(){
-    var platform = new H.service.Platform({
-      'app_id': '96fqhN8pFJlMmWwExh3R',
-      'app_code': 'DyVZKxP-dKM2Quu8xkuN2A'
-    });    
-    var originlatlong = 'geo!'+lat+','+lng;
-    var destination = 'geo!'+latend+','+lngend;
-    var routingParameters = {
-      'mode': 'fastest;car;traffic:disabled',
-      'waypoint0': originlatlong,
-      'waypoint1': destination,
-      'legAttributes': 'shape'
-    };
-    var router = platform.getRoutingService(null, 8);
-    router.calculateRoute(routingParameters, 
-      function(result:any) {
-        shaperoute = result.response.route[0].leg[0].shape;
-        route();
-      },
-      function(error:any) {
-        console.log(error.message);
-      });
-    
+    route();
     function route(){
       var newVariable = [];
       shaperoute.forEach(res => {

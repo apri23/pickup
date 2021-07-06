@@ -74,11 +74,23 @@
 
         <ion-card *ngFor="let paketa of paketss; let i = index;" class="card-mids" (click)="detaildriver(paketa)">
           <ion-row style="border-bottom: 1px solid #DEDEDE;">
-            <ion-col style="margin: 0px; padding: 0px; background-color: transparent;" ion-item>
-              <img item-start style="width: 30px; margin: 0px 7px 0px 0px;" src="assets/icon/id.svg" />
-              <span style="font-size: 3.2vw;">{{paketa.pickupid}}</span>
-              <ion-badge item-end style="margin: 1%; padding: 5px; font-size: 10px;" color="lights">{{paketa.pickupstatusdesc}}</ion-badge>
-            </ion-col>
+
+            <ng-container *ngIf="paketa.customer_id=='QOB'; then ritel; else koorporat"></ng-container>
+            <ng-template #ritel>
+              <ion-col style="margin: 0px; padding: 0px; background-color: #FFDBDB;" ion-item>
+                <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idritel.svg" />
+                <span style="font-size: 3.2vw;">{{paketa.pickupid}}</span>
+                <ion-badge item-end style="margin: 1%; padding: 5px; font-size: 10px;" color="lights">{{paketa.pickupstatusdesc}}</ion-badge>
+              </ion-col>
+            </ng-template>
+            <ng-template #koorporat>
+              <ion-col style="margin: 0px; padding: 0px; background-color: #DDDBFF;" ion-item>
+                <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idcorporat.svg" />
+                <span style="font-size: 3.2vw;"><b>{{paketa.pickupid}}</b></span>
+                <ion-badge item-end style="margin: 1%; padding: 5px; font-size: 10px;" color="lights">{{paketa.pickupstatusdesc}}</ion-badge>
+              </ion-col>
+            </ng-template>
+
           </ion-row>
           <ion-row>
             <ion-col class="desc">

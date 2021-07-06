@@ -82,6 +82,22 @@
       </ion-card>
       </ion-grid>
   </ion-navbar>
+  <ion-row>
+    <ng-container *ngIf="pfilterstatus==true; then filter; else nofilter"></ng-container>
+    <ng-template #filter>
+      <ion-col col-2 style="padding: 0px;">
+        <ion-badge item-end style="border: 1px solid; margin: 5px; padding: 10px; width: calc(100% - 10px); font-size: 3vw; color: red;" color="lightt" (click)="resetfilter()"><ion-icon ios="ios-close" md="md-close"></ion-icon></ion-badge>
+      </ion-col>
+      <ion-col style="padding: 0px;">
+        <ion-badge item-end style="border: 1px solid; margin: 5px; padding: 10px; width: calc(100% - 10px); font-size: 3vw; color: green;" color="lights" (click)="filterstatus(statusfilter)">{{statusfilter}} <ion-icon name="ios-arrow-down-outline" style="float: right;"></ion-icon></ion-badge>
+      </ion-col>
+    </ng-template>
+    <ng-template #nofilter>
+      <ion-col style="padding: 0px;">
+        <ion-badge item-end style="border: 1px solid; margin: 5px; padding: 10px; width: calc(100% - 10px); font-size: 3vw; color: black;" color="abu" (click)="filterstatus(statusfilter)">Semua Pelanggan<ion-icon name="ios-arrow-down-outline" style="float: right;"></ion-icon></ion-badge>
+      </ion-col>
+    </ng-template>
+  </ion-row>
 </ion-header>
 
 <ion-content overflow-scroll="false">
@@ -137,13 +153,34 @@
           <ion-list class="ion-scroll">
             <ion-card *ngFor="let item of items" class="card-mids" (click)="detail_trx(item,item.pickupdate)">
               <ion-row style="border-bottom: 1px solid #DEDEDE;">
-                <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item>
+
+                <ng-container *ngIf="item.customer_id=='QOB'; then ritel; else koorporat"></ng-container>
+                <ng-template #ritel>
+                  <ion-col col-9 style="margin: 0px; padding: 0px; background-color: #FFDBDB;" ion-item>
+                    <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idritel.svg" />
+                    <span style="font-size: 3.2vw;"><b>{{item.pickupid}}</b></span>
+                  </ion-col>
+                  <ion-col col-3 style="margin: 0px; padding: 0px; background-color: #FFDBDB; text-align: right;" ion-item>
+                    <span style="font-size: 3.2vw;"><b>{{item.requestpickupdate}}</b></span>
+                  </ion-col>
+                </ng-template>
+                <ng-template #koorporat>
+                  <ion-col col-9 style="margin: 0px; padding: 0px; background-color: #DDDBFF;" ion-item>
+                      <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idcorporat.svg" />
+                      <span style="font-size: 3.2vw;"><b>{{item.pickupid}}</b></span>
+                    </ion-col>
+                    <ion-col col-3 style="margin: 0px; padding: 0px; background-color: #DDDBFF; text-align: right;" ion-item>
+                      <span style="font-size: 3.2vw;"><b>{{item.requestpickupdate}}</b></span>
+                    </ion-col>
+                </ng-template>
+
+                <!-- <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item>
                   <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
                   <span style="font-size: 3.2vw;"><b>{{item.pickupid}}</b></span>
                 </ion-col>
                 <ion-col col-3 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item>
                   <span style="font-size: 3.2vw;"><b>{{item.requestpickupdate}}</b></span>
-                </ion-col>
+                </ion-col> -->
               </ion-row>
               <ion-row>
                 <ion-col class="desc">
@@ -186,13 +223,35 @@
           <ion-list class="ion-scroll">
             <ion-card *ngFor="let itemd of itemsd" class="card-mids">
               <ion-row style="border-bottom: 1px solid #DEDEDE;">
-                <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item (click)="detail_trx(itemd,itemd.pickupdate)">
+
+                <ng-container *ngIf="itemd.customer_id=='QOB'; then riteld; else koorporatd"></ng-container>
+                <ng-template #riteld>
+                  <ion-col col-9 style="margin: 0px; padding: 0px; background-color: #FFDBDB;" ion-item (click)="detail_trx(itemd,itemd.pickupdate)">
+                    <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idritel.svg" />
+                    <span style="font-size: 3.2vw;"><b>{{itemd.pickupid}}</b></span>
+                  </ion-col>
+                  <ion-col col-3 style="margin: 0px; padding: 0px; background-color: #FFDBDB; text-align: right;" ion-item (click)="aksi_dibawa(itemd)">
+                    <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Bawa Paket</button>
+                  </ion-col>
+                </ng-template>
+                <ng-template #koorporatd>
+                  <ion-col col-9 style="margin: 0px; padding: 0px; background-color: #DDDBFF;" ion-item (click)="detail_trx(itemd,itemd.pickupdate)">
+                    <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idcorporat.svg" />
+                    <span style="font-size: 3.2vw;"><b>{{itemd.pickupid}}</b></span>
+                  </ion-col>
+                  <ion-col col-3 style="margin: 0px; padding: 0px; background-color: #DDDBFF; text-align: right;" ion-item (click)="aksi_dibawa(itemd)">
+                    <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Bawa Paket</button>
+                  </ion-col>
+                </ng-template>
+
+                <!-- <ion-col col-9 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item (click)="detail_trx(itemd,itemd.pickupdate)">
                   <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
                   <span style="font-size: 3.2vw;"><b>{{itemd.pickupid}}</b></span>
                 </ion-col>
                 <ion-col col-3 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item (click)="aksi_dibawa(itemd)">
                   <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Bawa Paket</button>
-                </ion-col>
+                </ion-col> -->
+
               </ion-row>
               <ion-row (click)="detail_trx(itemd,itemd.pickupdate)">
                 <ion-col class="desc">
@@ -235,13 +294,35 @@
           <ion-list class="ion-scroll">
             <ion-card *ngFor="let itemz of itemss" class="card-mids">
               <ion-row style="border-bottom: 1px solid #DEDEDE;">
-                <ion-col col-8 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item (click)="detail_trx(itemz,itemz.pickupdate)">
+
+                <ng-container *ngIf="itemz.customer_id=='QOB'; then ritelz; else koorporatz"></ng-container>
+                <ng-template #ritelz>
+                  <ion-col col-8 style="margin: 0px; padding: 0px; background-color: #FFDBDB;" ion-item (click)="detail_trx(itemz,itemz.pickupdate)">
+                    <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idritel.svg" />
+                    <span style="font-size: 3.2vw;"><b>{{itemz.pickupid}}</b></span>
+                  </ion-col>
+                  <ion-col col-4 style="margin: 0px; padding: 0px; background-color: #FFDBDB; text-align: right;" ion-item (click)="aksi_tibakp(itemz)">
+                    <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Tiba di Kantor Pos</button>
+                  </ion-col>
+                </ng-template>
+                <ng-template #koorporatz>
+                  <ion-col col-8 style="margin: 0px; padding: 0px; background-color: #DDDBFF;" ion-item (click)="detail_trx(itemz,itemz.pickupdate)">
+                    <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/idcorporat.svg" />
+                    <span style="font-size: 3.2vw;"><b>{{itemz.pickupid}}</b></span>
+                  </ion-col>
+                  <ion-col col-4 style="margin: 0px; padding: 0px; background-color: #DDDBFF; text-align: right;" ion-item (click)="aksi_tibakp(itemz)">
+                    <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Tiba di Kantor Pos</button>
+                  </ion-col>
+                </ng-template>
+
+                <!-- <ion-col col-8 style="margin: 0px; padding: 0px; background-color: transparent;" ion-item (click)="detail_trx(itemz,itemz.pickupdate)">
                   <img item-start style="width: 30px; margin: 0px 7px 0px 7px;" src="assets/icon/id.svg" />
                   <span style="font-size: 3.2vw;">{{itemz.pickupid}}</span>
                 </ion-col>
                 <ion-col col-4 style="margin: 0px; padding: 0px; background-color: transparent; text-align: right;" ion-item (click)="aksi_tibakp(itemz)">
                   <button ion-button color="utama" style="font-size: 2.2vw; margin: 0px; border-radius: 5px;">Tiba di Kantor Pos</button>
-                </ion-col>
+                </ion-col> -->
+
               </ion-row>
               <ion-row (click)="detail_trx(itemz,itemz.pickupdate)">
                 <ion-col class="desc">

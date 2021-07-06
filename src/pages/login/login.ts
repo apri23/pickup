@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, Platform, LoadingController, AlertController, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Platform, LoadingController, AlertController, MenuController, ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AccessProvider } from '../providers/access-providers';
 import { OneSignal } from '@ionic-native/onesignal';
@@ -44,7 +44,8 @@ export class LoginPage {
     private menuCtrl: MenuController,
     private clipboard: Clipboard,
     private geolocation: Geolocation,
-    private appVersion: AppVersion
+    private appVersion: AppVersion,
+    public actionSheetCtrl: ActionSheetController
   ) {
     this.menuCtrl.enable(false, 'myMenu');
     // console.log(md5("MBL000009-AAaa123$"));
@@ -61,8 +62,9 @@ export class LoginPage {
 
   ionViewWillEnter() {
     if (this.platform.is('cordova')) {
-      this.getVersi();
-      
+      // this.getVersi();
+      this.getId();
+      this.cek_login();
     } else {
       this.player_id = null;
     };
@@ -101,7 +103,6 @@ export class LoginPage {
           this.getId();
           this.cek_login();
         }
-        
       });
     },(err)=>{
       loader.dismiss();
@@ -116,6 +117,7 @@ export class LoginPage {
     loaderz.present();
     this.oneSignal.getIds().then(identity => {
       loaderz.dismiss();
+      console.log(identity.userId)
       this.player_id = identity.userId;
       this.ceklokasi();
     }).catch((error: any) => {loaderz.dismiss();});
@@ -238,8 +240,8 @@ export class LoginPage {
     var p_id:any;
     if(this.player_id == undefined){
       p_id = '5b4e4f49-ceb6-4aa5-9bc6-9976635046a0';
-      this.presentToast('Ada kesalahan, tidak bisa login untuk saat ini..');
-      return;
+      // this.presentToast('Ada kesalahan device, tidak bisa login untuk saat ini..');
+      // return;
     } else {
       p_id = this.player_id;
     }
@@ -269,21 +271,52 @@ export class LoginPage {
   }
 
   showdevice(){
-    const confirm = this.alertCtrl.create({
-      title: 'Device ID',
-      message: this.player_id,
-      mode: 'ios',
+    // const confirm = this.alertCtrl.create({
+    //   title: 'Device ID',
+    //   message: this.player_id,
+    //   mode: 'ios',
+    //   buttons: [
+    //     {
+    //       text: 'Salin',
+    //       handler: () => {
+    //         this.clipboard.copy(this.player_id);
+    //         this.presentToastsukses('"'+this.player_id+'" di salin')
+    //       }
+    //     }
+    //   ]
+    // });
+    // confirm.present();
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'Check Available Login',
       buttons: [
-        {
-          text: 'Salin',
+      {
+          icon: this.player_id==''||this.player_id==undefined||this.player_id==null ? 'close' : 'md-checkmark',
+          text: 'Device ID '+'('+this.player_id+')',
           handler: () => {
-            this.clipboard.copy(this.player_id);
-            this.presentToastsukses('"'+this.player_id+'" di salin')
+            if(this.player_id==''||this.player_id==undefined||this.player_id==null){
+
+            } else {
+              this.clipboard.copy(this.player_id);
+              this.presentToastsukses('"'+this.player_id+'" di salin');
+            }
+          }
+        },{
+          icon: this.lat == false ? 'close' : 'md-checkmark',
+          text: 'Lokasi '+'('+this.lat+','+this.lng+')',
+          handler: () => {
+            
+          }
+        },{
+          text: 'Close',
+          role: 'cancel',
+          handler: () => {
+            
           }
         }
       ]
     });
-    confirm.present();
+    actionSheet.present();
   }
 
   cek_akaes(data){

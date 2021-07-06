@@ -14,6 +14,7 @@ import { SearchPostalPage } from '../../search-postal/search-postal';
 export class DriverValidasiPaketPage {
   page:any = 'driverval';
 	data_result:any;
+  data_customer:any;
   login_data:any;
   data_all:any;
   submit:any = true;
@@ -81,7 +82,7 @@ export class DriverValidasiPaketPage {
     public actionSheetCtrl: ActionSheetController
   ) {
   	this.data_result = navParams.get('data');
-    // console.log(this.data_result);
+    this.data_customer = navParams.get('data_customer');
     this.langForm = new FormGroup({
       "langs": new FormControl({value: '', disabled: false})
     });
@@ -368,11 +369,17 @@ export class DriverValidasiPaketPage {
   }
 
   cek_tarif(){
+    let cstmr_id;
+    if(this.data_customer.customer_id == 'QOB'){
+      cstmr_id = '';
+    } else {
+      cstmr_id = this.data_customer.customer_id;
+    }
     const loader = this.loadingCtrl.create({
       spinner: 'dots'
     });
     let body = {
-      customerid: '',
+      customerid: cstmr_id,
       desttypeid: '1',
       itemtypeid: this.itemtype,
       shipperzipcode: this.kodepospengirim,
@@ -388,6 +395,7 @@ export class DriverValidasiPaketPage {
     this.accsPrvds.post_pos_3(body, 'getfee').subscribe((res:any)=>{
       if(res.response.data == null || res.response.data.length == 0){
         this.tarif = null;
+        this.presentToastgagal('Tidak di temukan tarif "'+cstmr_id+'"');
       } else {
         this.presentActionSheet(res.response.data);
       }
@@ -510,10 +518,10 @@ export class DriverValidasiPaketPage {
       length: this.panjangbarang,
       height: this.tinggibarang,
       diagonal: this.diagonalbarang,
-      fee: this.ongkir,
-      feetax: this.ongkirfee,
-      insurance: this.asuransi,
-      insurancetax: this.asuransifee,
+      fee: Math.round(this.ongkir),
+      feetax: Math.round(this.ongkirfee),
+      insurance: Math.round(this.asuransi),
+      insurancetax: Math.round(this.asuransifee),
       valuegoods: this.nilaibarang,
       desctrans: this.namanbarang,
       codvalue: '0'
@@ -566,6 +574,7 @@ export class DriverValidasiPaketPage {
         this.presentToastsukses('Berhasil, data kiriman berhasil di validasi..');
         this.navCtrl.pop();
         // this.viewCtrl.dismiss();
+        this.send_endpoin_sampoerna();
       } else {
         this.presentToastgagal(res.response.respmsg);
       }
@@ -605,6 +614,25 @@ export class DriverValidasiPaketPage {
       ]
     });
     alert.present();
+  }
+
+  send_endpoin_sampoerna(){
+    if(this.data_customer.customer_id != 'INDHMS07603B'){
+      return;
+    }
+    let body = {
+      extid: this.extid,
+      totalfee: this.total,
+      weight: this.beratbarang,
+      width: this.lebarbarang,
+      length: this.panjangbarang,
+      height: this.tinggibarang
+    };
+    this.accsPrvds.post_sampoerna_1(body, 'assigment').subscribe((res:any)=>{
+      console.log(res);
+    },(err)=>{
+      console.log(err);
+    });
   }
 
 }
